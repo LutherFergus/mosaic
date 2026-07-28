@@ -124,7 +124,7 @@ body.standalone{background:#16181d}
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🧶 Mosaic Blanket Designer <span class="badge">v20.20</span></div><input id="projectName" class="projectName" value="Untitled Blanket"><div class="spacer"></div><button id="newBtn">New</button><button id="openBtn">Open</button><button id="undoBtn" title="Undo">↶ Undo</button><button id="redoBtn" title="Redo">↷ Redo</button><button id="saveBtn" class="primary">Save Project</button><input id="projectFile" type="file" accept=".mosaic,.json" hidden></header>
+<header class="top"><div class="brand">🧶 Mosaic Blanket Designer <span class="badge">v20.21</span></div><input id="projectName" class="projectName" value="Untitled Blanket"><div class="spacer"></div><button id="newBtn">New</button><button id="openBtn">Open</button><button id="undoBtn" title="Undo">↶ Undo</button><button id="redoBtn" title="Redo">↷ Redo</button><button id="saveBtn" class="primary">Save Project</button><input id="projectFile" type="file" accept=".mosaic,.json" hidden></header>
 <nav class="toolbar">
 <button class="tool active" data-tool="paint" title="Change one stitch at a time (P)">✏ Paint Stitch</button><span class="sep"></span><button id="mirrorBtn">⇆ Mirror</button><button id="clearBtn">Clear</button><span class="sep"></span><button id="importBtn">Import Image</button><input id="imageFile" class="srFile" type="file" accept="image/*"><button id="exportPngBtn">Export Chart PNG</button><button id="exportPdfBtn" class="primary">Create PDF / Print</button>
 </nav>
@@ -509,7 +509,7 @@ window.addEventListener('pageshow',e=>{if(e.persisted)location.reload()});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persistProject()});
 $('#projectName').addEventListener('change',schedulePersist);
 $('#projectName').addEventListener('blur',schedulePersist);
-if('serviceWorker' in navigator){navigator.serviceWorker.register('/mosaic/sw.js',{scope:'/mosaic/'}).catch(err=>console.warn('Service worker registration failed',err))}
+if('serviceWorker' in navigator){(async()=>{try{const regs=await navigator.serviceWorker.getRegistrations();for(const reg of regs){try{await reg.update()}catch{}}const reg=await navigator.serviceWorker.register('/mosaic/sw.js',{scope:'/mosaic/'});reg.update?.();if(navigator.serviceWorker.controller){let refreshing=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(refreshing)return;refreshing=true;location.reload()})}const KEY='mosaic-sw-v9-cleared';if(!localStorage.getItem(KEY)&&'caches' in window){const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('mosaic-pwa-')&&k!=='mosaic-pwa-v9').map(k=>caches.delete(k)));localStorage.setItem(KEY,'1');if(keys.some(k=>k.startsWith('mosaic-pwa-')&&k!=='mosaic-pwa-v9'))location.reload()}}catch(err){console.warn('Service worker registration failed',err)}})()}
 })();
 </script>
 </body></html>

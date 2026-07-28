@@ -1,5 +1,5 @@
 /* Mosaic Blanket Designer service worker */
-const CACHE = 'mosaic-pwa-v8';
+const CACHE = 'mosaic-pwa-v9';
 const ASSETS = [
   '/mosaic/',
   '/mosaic/index.html',
@@ -27,22 +27,41 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
+  const url = new URL(req.url);
+  const isAppShell =
+    req.mode === 'navigate' ||
+    url.pathname === '/mosaic/' ||
+    url.pathname === '/mosaic/index.html' ||
+    url.pathname.endsWith('/sw.js');
+
+  // Always try network first for HTML / navigation so phones pick up fixes.
+  if (isAppShell) {
+    event.respondWith(
+      fetch(req)
+        .then((res) => {
+          if (res && res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE).then((cache) => cache.put(req, copy));
+          }
+          return res;
+        })
+        .catch(() => caches.match(req).then((cached) => cached || caches.match('/mosaic/index.html')))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(req).then((cached) => {
       const fetchPromise = fetch(req)
         .then((res) => {
-          if (res && res.ok && new URL(req.url).origin === self.location.origin) {
+          if (res && res.ok && url.origin === self.location.origin) {
             const copy = res.clone();
             caches.open(CACHE).then((cache) => cache.put(req, copy));
           }
           return res;
         })
         .catch(() => cached);
-
-      if (cached && (req.mode === 'navigate' || ASSETS.some((a) => req.url.endsWith(a.replace('/mosaic/', '')) || req.url.endsWith(a)))) {
-        return cached;
-      }
-      return fetchPromise.then((res) => res || cached || caches.match('/mosaic/index.html'));
+      return cached || fetchPromise.then((res) => res || cached);
     })
   );
 });
