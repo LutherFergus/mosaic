@@ -8,9 +8,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Mosaic" />
 <meta name="mobile-web-app-capable" content="yes" />
-<link rel="manifest" href="manifest.webmanifest" />
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+<link rel="manifest" href="/mosaic/manifest.webmanifest" />
+<link rel="apple-touch-icon" href="/mosaic/icons/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/mosaic/icons/icon-192.png" />
 <title>Mosaic Blanket Designer</title>
 <style>
 :root{--bg:#16181d;--panel:#20242b;--panel2:#292e37;--line:#3a414d;--text:#f2f4f7;--muted:#aab2bf;--accent:#9b7cff;--danger:#ff6b6b;--ok:#51cf66;--cell:16px;--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px)}
@@ -509,7 +509,7 @@ window.addEventListener('pageshow',e=>{if(e.persisted)location.reload()});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persistProject()});
 $('#projectName').addEventListener('change',schedulePersist);
 $('#projectName').addEventListener('blur',schedulePersist);
-if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(err=>console.warn('Service worker registration failed',err))}
+if('serviceWorker' in navigator){navigator.serviceWorker.register('/mosaic/sw.js',{scope:'/mosaic/'}).catch(err=>console.warn('Service worker registration failed',err))}
 })();
 </script>
 </body></html>

@@ -1,12 +1,12 @@
 /* Mosaic Blanket Designer service worker */
-const CACHE = 'mosaic-pwa-v6';
+const CACHE = 'mosaic-pwa-v7';
 const ASSETS = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './icons/icon-192.png',
-  './icons/icon-512.png',
-  './icons/apple-touch-icon.png'
+  '/mosaic/',
+  '/mosaic/index.html',
+  '/mosaic/manifest.webmanifest',
+  '/mosaic/icons/icon-192.png',
+  '/mosaic/icons/icon-512.png',
+  '/mosaic/icons/apple-touch-icon.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -39,11 +39,10 @@ self.addEventListener('fetch', (event) => {
         })
         .catch(() => cached);
 
-      // App shell: prefer cache for offline, else network
-      if (cached && (req.mode === 'navigate' || ASSETS.some((a) => req.url.endsWith(a.replace('./', ''))))) {
+      if (cached && (req.mode === 'navigate' || ASSETS.some((a) => req.url.endsWith(a.replace('/mosaic/', '')) || req.url.endsWith(a)))) {
         return cached;
       }
-      return fetchPromise.then((res) => res || cached);
+      return fetchPromise.then((res) => res || cached || caches.match('/mosaic/index.html'));
     })
   );
 });
