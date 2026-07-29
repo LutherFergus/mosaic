@@ -1,5 +1,5 @@
 /* Mosaic Blanket Designer service worker */
-const CACHE = 'mosaic-pwa-v33';
+const CACHE = 'mosaic-pwa-v34';
 const ASSETS = [
   '/mosaic/',
   '/mosaic/index.html',
