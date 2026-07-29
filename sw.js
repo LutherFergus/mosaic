@@ -1,12 +1,13 @@
 /* Mosaic Blanket Designer service worker */
-const CACHE = 'mosaic-pwa-v13';
+const CACHE = 'mosaic-pwa-v14';
 const ASSETS = [
   '/mosaic/',
   '/mosaic/index.html',
   '/mosaic/manifest.webmanifest',
   '/mosaic/icons/icon-192.png',
   '/mosaic/icons/icon-512.png',
-  '/mosaic/icons/apple-touch-icon.png'
+  '/mosaic/icons/apple-touch-icon.png',
+  '/mosaic/vendor/pdf-lib.min.js'
 ];
 
 self.addEventListener('install', (event) => {
