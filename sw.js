@@ -1,5 +1,5 @@
 /* Mosaic Blanket Designer service worker */
-const CACHE = 'mosaic-pwa-v27';
+const CACHE = 'mosaic-pwa-v28';
 const ASSETS = [
   '/mosaic/',
   '/mosaic/index.html',
@@ -9,6 +9,20 @@ const ASSETS = [
   '/mosaic/icons/apple-touch-icon.png',
   '/mosaic/vendor/pdf-lib.min.js'
 ];
+
+const pdfDownloads = new Map();
+
+self.addEventListener('message', (event) => {
+  const data = event.data || {};
+  if (data.type === 'STORE_PDF' && data.key && data.buffer) {
+    pdfDownloads.set(data.key, {
+      buffer: data.buffer,
+      name: data.name || 'mosaic-pattern.pdf',
+      storedAt: Date.now()
+    });
+    event.ports && event.ports[0] && event.ports[0].postMessage({ ok: true });
+  }
+});
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -29,13 +43,36 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
+  if (url.pathname.startsWith('/mosaic/download/')) {
+    event.respondWith((async () => {
+      const key = url.searchParams.get('key');
+      const item = key ? pdfDownloads.get(key) : null;
+      if (key) pdfDownloads.delete(key);
+      if (!item) {
+        return new Response('PDF expired. Tap Download PDF again.', {
+          status: 404,
+          headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+        });
+      }
+      const safe = String(item.name || 'mosaic-pattern.pdf').replace(/[^\w.\-]+/g, '_');
+      return new Response(item.buffer, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': `attachment; filename="${safe}"`,
+          'Cache-Control': 'no-store'
+        }
+      });
+    })());
+    return;
+  }
+
   const isAppShell =
     req.mode === 'navigate' ||
     url.pathname === '/mosaic/' ||
     url.pathname === '/mosaic/index.html' ||
     url.pathname.endsWith('/sw.js');
 
-  // Always try network first for HTML / navigation so phones pick up fixes.
   if (isAppShell) {
     event.respondWith(
       fetch(req)
