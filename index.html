@@ -500,7 +500,7 @@ body.standalone{background:var(--bg)}
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">Mosaic <span class="badge">v20.49</span></div><input id="projectName" class="projectName" value="" placeholder="Project name"><div class="spacer"></div><button id="newBtn">New</button><button id="openBtn">Open</button><button id="undoBtn" title="Undo">↶ Undo</button><button id="redoBtn" title="Redo">↷ Redo</button><button id="saveBtn" class="primary">Save Project</button><input id="projectFile" type="file" accept=".mosaic,.json" hidden></header>
+<header class="top"><div class="brand">Mosaic <span class="badge">v20.50</span></div><input id="projectName" class="projectName" value="" placeholder="Project name"><div class="spacer"></div><button id="newBtn">New</button><button id="openBtn">Open</button><button id="undoBtn" title="Undo">↶ Undo</button><button id="redoBtn" title="Redo">↷ Redo</button><button id="saveBtn" class="primary">Save Project</button><input id="projectFile" type="file" accept=".mosaic,.json" hidden></header>
 <nav class="toolbar">
 <button class="tool" data-tool="paint" title="Change one stitch at a time (P)">✏ Paint Stitch</button><span class="sep"></span><button id="mirrorBtn">⇆ Mirror</button><button id="clearBtn">Clear</button><span class="sep"></span><button id="importBtn">Import Image</button><input id="imageFile" class="srFile" type="file" accept="image/*"><button id="exportPngBtn">Export Chart PNG</button><button id="exportPdfBtn" class="primary">Download PDF</button><button id="exportAllSizesPdfBtn" title="Build a separate PDF for every blanket size">All Sizes PDFs</button>
 </nav>
@@ -929,7 +929,7 @@ function showValidation(){const issues=collectValidationIssues(),isolated=issues
 function validate(){showValidation()}
 function projectObject(){return {app:'Mosaic Blanket Designer',version:'20.20',name:$('#projectName').value,w:state.w,h:state.h,cells:state.cells,colors:state.colors,imageData:state.imageData,settings:{simplify:$('#simplify').value,fitMode:$('#fitMode').value,firstRow:+$('#firstRow').value,workSide:$('#workSide').value,direction:$('#direction').value,scLoop:$('#scLoop').value,dcLoop:$('#dcLoop').value,pairStyle:$('#pairStyle').value,patternType:$('#patternType').value,referenceOpacity:+$('#referenceOpacity').value,designOpacity:+$('#designOpacity').value,yarnWeight:state.yarnWeight,stitchesPerInch:state.stitchesPerInch,blanketPreset:state.blanketPreset||null,nameConfirmed:!!state.nameConfirmed}}}
 function triggerDownload(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
-async function shareOrDownload(blob,name,type){const file=new File([blob],name,{type:type||blob.type||'application/octet-stream'});if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:name});return 'shared'}catch(err){if(err&&err.name==='AbortError')return 'aborted'}}triggerDownload(blob,name);return 'downloaded'}
+async function shareOrDownload(blob,name,type){const file=new File([blob],name,{type:type||blob.type||'application/octet-stream'});if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file]});return 'shared'}catch(err){if(err&&err.name==='AbortError')return 'aborted'}}triggerDownload(blob,name);return 'downloaded'}
 function download(name,text,type='application/json'){shareOrDownload(new Blob([text],{type}),name,type).then(mode=>{if(mode==='shared')status('Shared '+name);else if(mode==='downloaded')status('Downloaded '+name)})}
 function persistProject(){try{localStorage.setItem(autosaveKey,JSON.stringify(projectObject()));return true}catch(err){try{const slim=projectObject();if(slim.imageData){slim.imageData={...slim.imageData,src:null};slim._imageStripped=true}localStorage.setItem(autosaveKey,JSON.stringify(slim));return true}catch{return false}}}
 function schedulePersist(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{persistProject()},500)}
@@ -975,7 +975,7 @@ async function sharePdfToFiles(blob,name){
   if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
     try{
       hideBusy();
-      await navigator.share({files:[file],title:name});
+      await navigator.share({files:[file]}); // files only — title/text becomes a second .txt on iOS Save to Files
       return 'shared';
     }catch(err){
       if(err&&err.name==='AbortError')return 'aborted';
@@ -1054,7 +1054,7 @@ window.addEventListener('pageshow',e=>{if(e.persisted)location.reload()});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persistProject()});
 $('#projectName').addEventListener('change',()=>{if(!isBlankProjectName($('#projectName').value))state.nameConfirmed=true;schedulePersist()});
 $('#projectName').addEventListener('blur',()=>{if(!isBlankProjectName($('#projectName').value))state.nameConfirmed=true;schedulePersist()});
-if('serviceWorker' in navigator){(async()=>{try{const EXPECT='mosaic-pwa-v49';const KEY='mosaic-sw-v49-cleared';const cached=localStorage.getItem(KEY);if(cached!==EXPECT){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));if('caches' in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)))}localStorage.setItem(KEY,EXPECT);location.replace('/mosaic/?v=49');return}const reg=await navigator.serviceWorker.register('/mosaic/sw.js?v=49',{scope:'/mosaic/'});reg.update?.()}catch(err){console.warn('Service worker registration failed',err)}})()}
+if('serviceWorker' in navigator){(async()=>{try{const EXPECT='mosaic-pwa-v50';const KEY='mosaic-sw-v50-cleared';const cached=localStorage.getItem(KEY);if(cached!==EXPECT){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));if('caches' in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)))}localStorage.setItem(KEY,EXPECT);location.replace('/mosaic/?v=50');return}const reg=await navigator.serviceWorker.register('/mosaic/sw.js?v=50',{scope:'/mosaic/'});reg.update?.()}catch(err){console.warn('Service worker registration failed',err)}})()}
 })();
 </script>
 </body></html>
