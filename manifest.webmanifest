@@ -7,8 +7,8 @@
   "id": "/mosaic/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#16181d",
-  "theme_color": "#16181d",
+  "background_color": "#e4ebe3",
+  "theme_color": "#e4ebe3",
   "icons": [
     {
       "src": "/mosaic/icons/icon-192.png",

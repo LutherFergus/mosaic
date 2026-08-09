@@ -3,25 +3,357 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#16181d" />
+<meta name="theme-color" content="#e4ebe3" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="Mosaic" />
 <meta name="mobile-web-app-capable" content="yes" />
 <link rel="manifest" href="/mosaic/manifest.webmanifest" />
 <link rel="apple-touch-icon" href="/mosaic/icons/apple-touch-icon.png" />
 <link rel="icon" type="image/png" sizes="192x192" href="/mosaic/icons/icon-192.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,650;9..144,700&display=swap" rel="stylesheet" />
 <title>Mosaic Blanket Designer</title>
 <style>
-:root{--bg:#16181d;--panel:#20242b;--panel2:#292e37;--line:#3a414d;--text:#f2f4f7;--muted:#aab2bf;--accent:#9b7cff;--danger:#ff6b6b;--ok:#51cf66;--cell:16px;--safe-top:env(safe-area-inset-top,0px);--safe-right:env(safe-area-inset-right,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px)}
-*{box-sizing:border-box}html,body{margin:0;width:100%;max-width:100%;height:100%;height:100dvh;height:100svh;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%;touch-action:manipulation}body{position:fixed;inset:0}
-button,input,select{font:inherit;max-width:100%}button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px 11px;cursor:pointer;touch-action:manipulation}button:hover{border-color:var(--accent)}button.active{background:var(--accent);color:white}.primary{background:var(--accent);border-color:var(--accent)}
-.dialogActions label.primary{display:inline-flex;align-items:center;justify-content:center;padding:8px 11px;border:1px solid var(--accent);border-radius:8px;cursor:pointer;touch-action:manipulation;line-height:1.2;box-sizing:border-box;flex:1 1 auto;text-align:center;color:var(--text)}
-.dialogActions label.primary:hover{filter:brightness(1.05)}
-.app{display:grid;grid-template-rows:52px auto minmax(0,1fr) auto;width:100%;max-width:100%;height:100%;max-height:100%;overflow:hidden;min-height:0;padding-top:var(--safe-top);padding-left:var(--safe-left);padding-right:var(--safe-right);padding-bottom:var(--safe-bottom)}.top{display:flex;align-items:center;gap:12px;padding:0 14px;border-bottom:1px solid var(--line);background:#1b1e24;min-width:0;max-width:100%;overflow:hidden}.brand{font-weight:700;font-size:17px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.spacer{flex:1;min-width:0}.projectName{background:transparent;color:var(--text);border:1px solid transparent;border-radius:6px;padding:6px;width:260px;max-width:100%;text-align:center}.projectName:focus{border-color:var(--line);outline:none}
-.toolbar{display:flex;align-items:center;align-content:center;flex-wrap:wrap;gap:7px;padding:6px 10px;background:var(--panel);border-bottom:1px solid var(--line);overflow-x:auto;overflow-y:hidden;max-width:100%;min-width:0;-webkit-overflow-scrolling:touch}.toolbar .sep{width:1px;height:25px;background:var(--line);margin:0 3px;flex:0 0 auto}.tool{min-width:38px}.workspace{--left-width:218px;--right-width:300px;position:relative;display:grid;grid-template-columns:var(--left-width) minmax(0,1fr) var(--right-width);min-height:0;min-width:0;max-width:100%;overflow:hidden;transition:grid-template-columns .2s ease}.workspace.left-collapsed{--left-width:0px}.workspace.right-collapsed{--right-width:0px}.left,.right{position:relative;background:var(--panel);padding:9px 10px;overflow:auto;min-width:0;transition:padding .2s ease,opacity .15s ease,transform .2s ease;-webkit-overflow-scrolling:touch}.left{border-right:1px solid var(--line)}.right{border-left:1px solid var(--line)}.workspace.left-collapsed .left,.workspace.right-collapsed .right{padding-left:0;padding-right:0;overflow:hidden;opacity:0;border-width:0;pointer-events:none}.sidebarTab{position:absolute;top:50%;z-index:30;width:24px;height:72px;padding:0;border-radius:0;display:flex;align-items:center;justify-content:center;background:#292e37;border:1px solid var(--line);box-shadow:0 3px 12px #0008;transform:translateY(-50%);font-weight:800}.sidebarTab.leftTab{left:calc(var(--left-width) - 1px);border-radius:0 8px 8px 0}.sidebarTab.rightTab{right:calc(var(--right-width) - 1px);border-radius:8px 0 0 8px}.workspace.left-collapsed .leftTab{left:0}.workspace.right-collapsed .rightTab{right:0}.sidebarTab:hover{border-color:var(--accent);background:#343a46}.center{display:grid;grid-template-rows:auto minmax(0,1fr);min-width:0;min-height:0;overflow:hidden}.modes{display:flex;align-items:end;gap:3px;padding:5px 10px 0;background:#1b1e24;border-bottom:1px solid var(--line);overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}.mode{border-radius:8px 8px 0 0;border-bottom:0;flex:0 0 auto}.canvasWrap{position:relative;overflow:auto;background-image:radial-gradient(#30343c 1px,transparent 1px);background-size:20px 20px;padding:30px;min-width:0;min-height:0;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}.canvasStage{display:inline-block;position:relative;transform-origin:top left;box-shadow:0 10px 35px #0009;background:#fff}.referenceImage{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;z-index:0}.grid{display:block;background:transparent;user-select:none;touch-action:none;position:relative;z-index:1;opacity:var(--design-opacity,1);image-rendering:pixelated;image-rendering:crisp-edges;cursor:default}.grid.paintCursor{cursor:crosshair}.grid.flashWarn{outline:3px solid #ffb000;outline-offset:2px}.section{margin-bottom:13px}.section h3{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 7px}.field{display:grid;grid-template-columns:minmax(0,1fr) 82px;align-items:center;gap:6px;margin:6px 0}.field input,.field select{width:100%;min-width:0;height:34px;background:#15181d;color:var(--text);border:1px solid var(--line);border-radius:7px;padding:5px 7px}.field select{padding-top:0;padding-bottom:0;line-height:32px}.right .field{grid-template-columns:minmax(88px,102px) minmax(0,1fr);gap:7px;margin:6px 0}.right .field>label{font-size:11.5px;line-height:1.15;overflow-wrap:anywhere}.right .field select{height:38px;line-height:normal;padding:0 30px 0 9px;text-overflow:ellipsis}.right .field input{height:36px;padding-left:9px;padding-right:9px}.palette{display:grid;gap:5px}.swatch{display:grid;grid-template-columns:26px minmax(0,1fr) 28px;align-items:center;gap:5px;padding:5px;border:1px solid var(--line);border-radius:8px}.swatch input:not([type=color]){min-width:0;width:100%;height:30px;padding:4px 6px;background:#15181d;color:var(--text);border:1px solid var(--line);border-radius:6px}.swatch.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}.swatchColor{width:26px;height:26px;border-radius:6px;border:1px solid #ffffff44}.swatch input[type=color]{width:28px;height:28px;padding:0;border:0;background:transparent}.help{font-size:12px;color:var(--muted);line-height:1.45}.status{display:flex;align-items:center;gap:12px;padding:6px 12px;min-height:30px;border-top:1px solid var(--line);background:#1b1e24;color:var(--muted);font-size:12px;min-width:0;max-width:100%;overflow:hidden}.status>*{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.patternPanel{display:none;height:100%;grid-template-columns:minmax(0,1fr) minmax(0,42%);min-height:0;min-width:0;overflow:hidden}.patternPanel.visible{display:grid}.patternText{background:#111318;color:#e8ebef;border:0;border-left:1px solid var(--line);padding:18px;resize:none;outline:none;line-height:1.55;white-space:pre;font-family:Consolas,monospace;min-width:0;min-height:0}.previewCanvas{background:white;max-width:100%}.hidden{display:none!important}.drop{border:1px dashed var(--line);padding:14px;border-radius:9px;text-align:center;color:var(--muted)}.rangeRow{display:grid;grid-template-columns:auto minmax(48px,1fr) minmax(44px,auto);gap:6px;align-items:center;margin:5px 0}.rangeRow label{white-space:nowrap;font-size:13px}.rangeRow input[type=range]{width:100%;min-width:0}.rangeRow .badge{min-width:44px;text-align:center;white-space:nowrap}.badge{padding:3px 6px;border-radius:999px;background:var(--panel2);font-size:11px}.modal{position:fixed;inset:0;background:#000a;display:flex;align-items:stretch;justify-content:center;z-index:50;padding:max(8px,var(--safe-top)) max(8px,var(--safe-right)) max(8px,var(--safe-bottom)) max(8px,var(--safe-left));overflow:hidden}.dialog{width:min(1180px,100%);max-width:100%;max-height:100%;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:0 24px 90px #000;margin:auto}.dialog h2{margin-top:0}.dialogActions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:16px}.importLayout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:24px}.importPreviewWrap{position:relative;background:#0d0f13;border:1px solid var(--line);border-radius:12px;overflow:hidden;min-height:620px;height:min(72vh,760px);display:flex;align-items:center;justify-content:center}.importPreviewWrap canvas{width:100%;height:100%;display:block;cursor:crosshair;object-fit:contain}.importPalette{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px}.importPaletteItem{display:flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:4px 7px;font-size:11px;background:#15181d}.importPaletteChip{width:16px;height:16px;border:1px solid #ffffff55;border-radius:4px}.importPalettePct{color:var(--muted)}.importPaletteItem input{accent-color:var(--accent)}.checkField{display:flex;align-items:center;justify-content:flex-start;gap:7px;min-height:34px;padding:5px 7px;border:1px solid var(--line);border-radius:7px;background:#15181d;font-size:12px}.checkField input{width:auto!important;height:auto!important;accent-color:var(--accent)}.autoColorField{grid-template-columns:minmax(0,1fr) 82px}.autoColorToggle{display:flex;align-items:center;justify-content:flex-end;gap:7px;font-size:12px;cursor:pointer}.autoColorToggle input{appearance:auto!important;width:18px!important;height:18px!important;min-width:18px;accent-color:var(--accent);margin:0}.autoColorToggle span{color:var(--text)}.left .simplifyField{grid-template-columns:minmax(0,1fr) 118px}.left .simplifyField select{width:118px}.importOptionRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.importOptionRow .field{margin:0}.importOptionRow .autoColorField{grid-template-columns:minmax(0,1fr) 28px}
-.vectorDialog{width:min(1420px,100%);height:min(920px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;padding:18px}.vectorHeader{display:flex;align-items:center;gap:12px;margin-bottom:10px}.vectorHeader h2{margin:0}.vectorLayout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px;min-height:0;flex:1}.vectorViewer{min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0d0f13}.vectorToolbar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:8px;background:#171a20;border-bottom:1px solid var(--line)}.vectorToolbar button{padding:6px 9px}.vectorToolbar button.active{background:var(--accent);border-color:var(--accent)}.vectorToolbar label{font-size:12px;color:var(--muted)}.vectorToolbar input{width:64px;height:30px;background:#101319;color:var(--text);border:1px solid var(--line);border-radius:6px;padding:4px 6px}.vectorToolbar .zoomReadout{width:72px;text-align:center}.vectorToolbar .viewOriginal.active{background:#815d24;border-color:#d9a64c}.vectorViewport{position:relative;overflow:hidden;min-height:360px;touch-action:none;cursor:crosshair}.vectorViewport.panMode{cursor:grab}.vectorViewport.dragging{cursor:grabbing}.vectorViewport canvas{position:absolute;inset:0;width:100%;height:100%;display:block}.vectorControls{overflow:auto;padding:2px 4px 2px 0}.vectorControls .field{grid-template-columns:1fr 118px}.vectorControls input[type=range]{width:100%}.vectorPercentInput{width:72px;height:30px;background:#101319;color:var(--text);border:1px solid var(--line);border-radius:6px;padding:4px 6px;text-align:right;font-variant-numeric:tabular-nums}.vectorClusterSizeWrap{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}.vectorClusterSizeInput{width:22px;min-width:22px;padding-left:3px;padding-right:3px}.vectorReadout{font-variant-numeric:tabular-nums;min-width:58px;text-align:center}.vectorPalette{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.vectorChip{width:24px;height:24px;border:1px solid #ffffff55;border-radius:5px}.vectorNote{border-left:3px solid var(--accent);padding:9px 10px;background:#ffffff08;border-radius:0 7px 7px 0;font-size:12px;line-height:1.45}.vectorColorChooser{display:grid;gap:7px;margin-top:9px;padding:9px;border:1px solid var(--line);border-radius:9px;background:#101319;max-height:260px;overflow:auto}.vectorColorChoice{display:grid;grid-template-columns:auto 28px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 7px;border:1px solid transparent;border-radius:7px;cursor:pointer}.vectorColorChoice:hover{background:#ffffff08}.vectorColorChoice:has(input:checked){border-color:#ffffff26;background:#ffffff0a}.vectorColorChoice input{width:16px;height:16px}.vectorColorSwatch{width:26px;height:26px;border:1px solid #ffffff55;border-radius:5px}.vectorColorPct{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}.radioStack{display:grid;gap:8px;margin:8px 0}.radioCard{display:block;border:1px solid var(--line);border-radius:9px;padding:9px}.radioCard:has(input:checked){border-color:var(--accent);background:#ffffff08}.fitBtn{width:100%;margin-top:8px}.validationDialog{width:min(860px,100%);max-height:100%;display:flex;flex-direction:column}.validationHeader{display:flex;align-items:center;gap:12px}.validationHeader h2{margin:0}.issueList{overflow:auto;display:grid;gap:10px;margin-top:14px;padding-right:4px}.issueCard{border:1px solid var(--line);border-radius:10px;padding:12px;background:#191c22}.issueTop{display:flex;align-items:flex-start;gap:10px}.issueIcon{font-size:20px}.issueBody{flex:1}.issueTitle{font-weight:650}.issueMeta{font-size:12px;color:var(--muted);margin-top:3px}.issueSuggestion{font-size:13px;line-height:1.45;margin-top:8px}.issueActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.summaryStrip{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.warningBadge{background:#5b4215;color:#ffd98a}.okBadge{background:#173d25;color:#9af0b3}
-.startDialog{width:min(1120px,100%);max-height:100%}.startDialog .field{grid-template-columns:minmax(0,190px) minmax(0,1fr)}.startDialog .field select{min-width:0;width:100%;padding-right:38px}.startDialog .startupGrid>div{min-width:0}.presetHero{width:min(640px,100%);margin:4px 0 18px;padding:14px 16px 15px;border:1px solid #414752;border-radius:12px;background:linear-gradient(180deg,#20242b,#171a20);box-shadow:0 8px 24px #0005}.presetHero label{display:block;margin-bottom:8px;font-size:14px;font-weight:800;letter-spacing:.02em;color:#f4f6fb}.presetHero select{display:block;width:100%;min-width:0;height:52px;padding:0 48px 0 16px;border:2px solid var(--accent);border-radius:10px;background:#11141a;color:#fff;font-size:17px;font-weight:750;line-height:52px;cursor:pointer;box-shadow:0 0 0 3px #7c5cff1a}.presetHero select:hover,.presetHero select:focus{border-color:#a991ff;box-shadow:0 0 0 4px #7c5cff2a;outline:none}.presetHero .rangeHint{margin:8px 2px 0}.orientationTabs,.sizeTabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.orientationTab,.sizeTab{padding:11px;border:1px solid var(--line);border-radius:9px;background:#191c22;text-align:center;cursor:pointer}.orientationTab.active,.sizeTab.active{border-color:var(--accent);background:#ffffff0a}.orientationPreview{display:inline-block;width:36px;height:24px;border:2px solid currentColor;border-radius:3px;vertical-align:middle;margin-right:7px}.orientationTab[data-orientation="portrait"] .orientationPreview{width:24px;height:36px}.startupGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}.startupSummary{margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:9px;background:#15181d}.rangeHint{font-size:11px;color:var(--muted);margin-top:-4px}.roundNotice{color:#ffd98a}.fullSpan{grid-column:1/-1}@media(max-width:620px){.startupGrid{grid-template-columns:1fr}.startDialog .field{grid-template-columns:1fr}}
+:root{
+  --bg:#e4ebe3;
+  --bg2:#d7e2d6;
+  --panel:#f7faf5;
+  --panel2:#e7efe4;
+  --ink-soft:#eef4ec;
+  --line:#b7c6b4;
+  --text:#243329;
+  --muted:#617266;
+  --accent:#5f7f64;
+  --accent-deep:#4a6b50;
+  --accent-soft:#5f7f6424;
+  --danger:#c45c5c;
+  --ok:#3d8b5f;
+  --warn-bg:#f3e6c8;
+  --warn-text:#7a5a14;
+  --ok-bg:#d8efe2;
+  --ok-text:#1f6b45;
+  --shadow:0 18px 48px #24332922;
+  --shadow-soft:0 8px 24px #24332914;
+  --cell:16px;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-right:env(safe-area-inset-right,0px);
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-left:env(safe-area-inset-left,0px);
+  --font-display:"Fraunces",Georgia,"Times New Roman",serif;
+  --font-ui:"Figtree","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;width:100%;max-width:100%;height:100%;height:100dvh;height:100svh;
+  font-family:var(--font-ui);background:var(--bg);color:var(--text);
+  overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%;touch-action:manipulation;
+}
+body{
+  position:fixed;inset:0;
+  background:
+    radial-gradient(1200px 700px at 12% -10%,#f4f8f2 0%,transparent 55%),
+    radial-gradient(900px 600px at 100% 0%,#d5e3d4 0%,transparent 50%),
+    linear-gradient(165deg,var(--bg) 0%,var(--bg2) 100%);
+}
+button,input,select{font:inherit;max-width:100%}
+button{
+  background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:10px;
+  padding:8px 11px;cursor:pointer;touch-action:manipulation;
+  transition:border-color .18s ease, background .18s ease, transform .18s ease, box-shadow .18s ease, color .18s ease;
+}
+button:hover{border-color:var(--accent);background:#edf4ea}
+button:active{transform:translateY(1px)}
+button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.primary:hover{background:var(--accent-deep);border-color:var(--accent-deep);color:#fff}
+.dialogActions label.primary{
+  display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;
+  border:1px solid var(--accent);border-radius:10px;cursor:pointer;touch-action:manipulation;
+  line-height:1.2;box-sizing:border-box;flex:1 1 auto;text-align:center;color:#fff;background:var(--accent);
+  transition:background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.dialogActions label.primary:hover{background:var(--accent-deep);border-color:var(--accent-deep);filter:none}
+.app{
+  display:grid;grid-template-rows:52px auto minmax(0,1fr) auto;width:100%;max-width:100%;
+  height:100%;max-height:100%;overflow:hidden;min-height:0;
+  padding-top:var(--safe-top);padding-left:var(--safe-left);padding-right:var(--safe-right);padding-bottom:var(--safe-bottom);
+}
+.top{
+  display:flex;align-items:center;gap:12px;padding:0 14px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,#f8fbf7,#eef4ec);min-width:0;max-width:100%;overflow:hidden;
+}
+.brand{
+  font-family:var(--font-display);font-weight:650;font-size:18px;letter-spacing:.01em;
+  min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--accent-deep);
+}
+.spacer{flex:1;min-width:0}
+.projectName{
+  background:transparent;color:var(--text);border:1px solid transparent;border-radius:8px;
+  padding:6px;width:260px;max-width:100%;text-align:center;
+}
+.projectName:focus{border-color:var(--line);outline:none;background:#fff}
+.toolbar{
+  display:flex;align-items:center;align-content:center;flex-wrap:wrap;gap:7px;padding:6px 10px;
+  background:var(--panel);border-bottom:1px solid var(--line);overflow-x:auto;overflow-y:hidden;
+  max-width:100%;min-width:0;-webkit-overflow-scrolling:touch;
+}
+.toolbar .sep{width:1px;height:25px;background:var(--line);margin:0 3px;flex:0 0 auto}
+.tool{min-width:38px}
+.workspace{
+  --left-width:218px;--right-width:300px;position:relative;display:grid;
+  grid-template-columns:var(--left-width) minmax(0,1fr) var(--right-width);
+  min-height:0;min-width:0;max-width:100%;overflow:hidden;transition:grid-template-columns .2s ease;
+}
+.workspace.left-collapsed{--left-width:0px}
+.workspace.right-collapsed{--right-width:0px}
+.left,.right{
+  position:relative;background:var(--panel);padding:9px 10px;overflow:auto;min-width:0;
+  transition:padding .2s ease,opacity .15s ease,transform .2s ease;-webkit-overflow-scrolling:touch;
+}
+.left{border-right:1px solid var(--line)}
+.right{border-left:1px solid var(--line)}
+.workspace.left-collapsed .left,.workspace.right-collapsed .right{
+  padding-left:0;padding-right:0;overflow:hidden;opacity:0;border-width:0;pointer-events:none;
+}
+.sidebarTab{
+  position:absolute;top:50%;z-index:30;width:24px;height:72px;padding:0;border-radius:0;
+  display:flex;align-items:center;justify-content:center;background:var(--panel2);
+  border:1px solid var(--line);box-shadow:var(--shadow-soft);transform:translateY(-50%);font-weight:800;color:var(--accent-deep);
+}
+.sidebarTab.leftTab{left:calc(var(--left-width) - 1px);border-radius:0 8px 8px 0}
+.sidebarTab.rightTab{right:calc(var(--right-width) - 1px);border-radius:8px 0 0 8px}
+.workspace.left-collapsed .leftTab{left:0}
+.workspace.right-collapsed .rightTab{right:0}
+.sidebarTab:hover{border-color:var(--accent);background:#edf4ea}
+.center{display:grid;grid-template-rows:auto minmax(0,1fr);min-width:0;min-height:0;overflow:hidden}
+.modes{
+  display:flex;align-items:end;gap:3px;padding:5px 10px 0;
+  background:linear-gradient(180deg,#f4f8f2,#e8efe6);border-bottom:1px solid var(--line);
+  overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch;
+}
+.mode{border-radius:8px 8px 0 0;border-bottom:0;flex:0 0 auto}
+.canvasWrap{
+  position:relative;overflow:auto;
+  background-color:#eef3ec;
+  background-image:radial-gradient(#c5d2c3 1px,transparent 1px);
+  background-size:20px 20px;padding:30px;min-width:0;min-height:0;
+  -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+}
+.canvasStage{
+  display:inline-block;position:relative;transform-origin:top left;
+  box-shadow:0 12px 36px #24332926;background:#fff;border-radius:2px;
+}
+.referenceImage{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;z-index:0}
+.grid{
+  display:block;background:transparent;user-select:none;touch-action:none;position:relative;z-index:1;
+  opacity:var(--design-opacity,1);image-rendering:pixelated;image-rendering:crisp-edges;cursor:default;
+}
+.grid.paintCursor{cursor:crosshair}
+.grid.flashWarn{outline:3px solid #d4a017;outline-offset:2px}
+.section{margin-bottom:13px}
+.section h3{
+  font-family:var(--font-display);font-size:13px;font-weight:650;letter-spacing:.04em;
+  text-transform:none;color:var(--accent-deep);margin:0 0 7px;
+}
+.field{display:grid;grid-template-columns:minmax(0,1fr) 82px;align-items:center;gap:6px;margin:6px 0}
+.field input,.field select{
+  width:100%;min-width:0;height:34px;background:#fff;color:var(--text);
+  border:1px solid var(--line);border-radius:8px;padding:5px 7px;
+}
+.field select{padding-top:0;padding-bottom:0;line-height:32px}
+.right .field{grid-template-columns:minmax(88px,102px) minmax(0,1fr);gap:7px;margin:6px 0}
+.right .field>label{font-size:11.5px;line-height:1.15;overflow-wrap:anywhere}
+.right .field select{height:38px;line-height:normal;padding:0 30px 0 9px;text-overflow:ellipsis}
+.right .field input{height:36px;padding-left:9px;padding-right:9px}
+.palette{display:grid;gap:5px}
+.swatch{
+  display:grid;grid-template-columns:26px minmax(0,1fr) 28px;align-items:center;gap:5px;
+  padding:5px;border:1px solid var(--line);border-radius:8px;background:#fff;
+}
+.swatch input:not([type=color]){
+  min-width:0;width:100%;height:30px;padding:4px 6px;background:#fff;color:var(--text);
+  border:1px solid var(--line);border-radius:6px;
+}
+.swatch.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.swatchColor{width:26px;height:26px;border-radius:6px;border:1px solid #24332933}
+.swatch input[type=color]{width:28px;height:28px;padding:0;border:0;background:transparent}
+.help{font-size:12px;color:var(--muted);line-height:1.45}
+.status{
+  display:flex;align-items:center;gap:12px;padding:6px 12px;min-height:30px;
+  border-top:1px solid var(--line);background:linear-gradient(180deg,#f4f8f2,#eaf1e8);
+  color:var(--muted);font-size:12px;min-width:0;max-width:100%;overflow:hidden;
+}
+.status>*{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.patternPanel{display:none;height:100%;grid-template-columns:minmax(0,1fr) minmax(0,42%);min-height:0;min-width:0;overflow:hidden}
+.patternPanel.visible{display:grid}
+.patternText{
+  background:#f3f7f1;color:#243329;border:0;border-left:1px solid var(--line);padding:18px;
+  resize:none;outline:none;line-height:1.55;white-space:pre;font-family:Consolas,monospace;min-width:0;min-height:0;
+}
+.previewCanvas{background:white;max-width:100%}
+.hidden{display:none!important}
+.drop{border:1px dashed var(--line);padding:14px;border-radius:9px;text-align:center;color:var(--muted)}
+.rangeRow{display:grid;grid-template-columns:auto minmax(48px,1fr) minmax(44px,auto);gap:6px;align-items:center;margin:5px 0}
+.rangeRow label{white-space:nowrap;font-size:13px}
+.rangeRow input[type=range]{width:100%;min-width:0}
+.rangeRow .badge{min-width:44px;text-align:center;white-space:nowrap}
+.badge{padding:3px 8px;border-radius:999px;background:var(--panel2);font-size:11px;color:var(--accent-deep)}
+.modal{
+  position:fixed;inset:0;background:#24332966;display:flex;align-items:stretch;justify-content:center;z-index:50;
+  padding:max(8px,var(--safe-top)) max(8px,var(--safe-right)) max(8px,var(--safe-bottom)) max(8px,var(--safe-left));
+  overflow:hidden;animation:modalIn .28s ease both;
+}
+.dialog{
+  width:min(1180px,100%);max-width:100%;max-height:100%;overflow:auto;background:var(--panel);
+  border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow);margin:auto;
+  animation:dialogRise .34s cubic-bezier(.2,.8,.2,1) both;
+}
+.dialog h2{margin-top:0;font-family:var(--font-display);font-weight:650;letter-spacing:.01em;color:var(--text)}
+.dialogActions{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:8px;margin-top:16px}
+.importLayout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:24px}
+.importPreviewWrap{
+  position:relative;background:#e7eee4;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  min-height:620px;height:min(72vh,760px);display:flex;align-items:center;justify-content:center;
+}
+.importPreviewWrap canvas{width:100%;height:100%;display:block;cursor:crosshair;object-fit:contain}
+.importPalette{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px}
+.importPaletteItem{
+  display:flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;
+  padding:4px 7px;font-size:11px;background:#fff;
+}
+.importPaletteChip{width:16px;height:16px;border:1px solid #24332944;border-radius:4px}
+.importPalettePct{color:var(--muted)}
+.importPaletteItem input{accent-color:var(--accent)}
+.checkField{
+  display:flex;align-items:center;justify-content:flex-start;gap:7px;min-height:34px;padding:5px 7px;
+  border:1px solid var(--line);border-radius:7px;background:#fff;font-size:12px;
+}
+.checkField input{width:auto!important;height:auto!important;accent-color:var(--accent)}
+.autoColorField{grid-template-columns:minmax(0,1fr) 82px}
+.autoColorToggle{display:flex;align-items:center;justify-content:flex-end;gap:7px;font-size:12px;cursor:pointer}
+.autoColorToggle input{appearance:auto!important;width:18px!important;height:18px!important;min-width:18px;accent-color:var(--accent);margin:0}
+.autoColorToggle span{color:var(--text)}
+.left .simplifyField{grid-template-columns:minmax(0,1fr) 118px}
+.left .simplifyField select{width:118px}
+.importOptionRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.importOptionRow .field{margin:0}
+.importOptionRow .autoColorField{grid-template-columns:minmax(0,1fr) 28px}
+.vectorDialog{width:min(1420px,100%);height:min(920px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;padding:18px}
+.vectorHeader{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.vectorHeader h2{margin:0}
+.vectorLayout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px;min-height:0;flex:1}
+.vectorViewer{
+  min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr);border:1px solid var(--line);
+  border-radius:12px;overflow:hidden;background:#e7eee4;
+}
+.vectorToolbar{
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:8px;background:#eef4ec;border-bottom:1px solid var(--line);
+}
+.vectorToolbar button{padding:6px 9px}
+.vectorToolbar button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.vectorToolbar label{font-size:12px;color:var(--muted)}
+.vectorToolbar input{
+  width:64px;height:30px;background:#fff;color:var(--text);border:1px solid var(--line);border-radius:6px;padding:4px 6px;
+}
+.vectorToolbar .zoomReadout{width:72px;text-align:center}
+.vectorToolbar .viewOriginal.active{background:#8a6a2a;border-color:#8a6a2a;color:#fff}
+.vectorViewport{position:relative;overflow:hidden;min-height:360px;touch-action:none;cursor:crosshair}
+.vectorViewport.panMode{cursor:grab}
+.vectorViewport.dragging{cursor:grabbing}
+.vectorViewport canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.vectorControls{overflow:auto;padding:2px 4px 2px 0}
+.vectorControls .field{grid-template-columns:1fr 118px}
+.vectorControls input[type=range]{width:100%}
+.vectorPercentInput{
+  width:72px;height:30px;background:#fff;color:var(--text);border:1px solid var(--line);
+  border-radius:6px;padding:4px 6px;text-align:right;font-variant-numeric:tabular-nums;
+}
+.vectorClusterSizeWrap{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.vectorClusterSizeInput{width:22px;min-width:22px;padding-left:3px;padding-right:3px}
+.vectorReadout{font-variant-numeric:tabular-nums;min-width:58px;text-align:center}
+.vectorPalette{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.vectorChip{width:24px;height:24px;border:1px solid #24332944;border-radius:5px}
+.vectorNote{border-left:3px solid var(--accent);padding:9px 10px;background:var(--accent-soft);border-radius:0 7px 7px 0;font-size:12px;line-height:1.45}
+.vectorColorChooser{
+  display:grid;gap:7px;margin-top:9px;padding:9px;border:1px solid var(--line);border-radius:9px;
+  background:#fff;max-height:260px;overflow:auto;
+}
+.vectorColorChoice{
+  display:grid;grid-template-columns:auto 28px minmax(0,1fr) auto;gap:8px;align-items:center;
+  padding:6px 7px;border:1px solid transparent;border-radius:7px;cursor:pointer;
+}
+.vectorColorChoice:hover{background:var(--ink-soft)}
+.vectorColorChoice:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.vectorColorChoice input{width:16px;height:16px}
+.vectorColorSwatch{width:26px;height:26px;border:1px solid #24332944;border-radius:5px}
+.vectorColorPct{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.radioStack{display:grid;gap:8px;margin:8px 0}
+.radioCard{display:block;border:1px solid var(--line);border-radius:9px;padding:9px;background:#fff}
+.radioCard:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.fitBtn{width:100%;margin-top:8px}
+.validationDialog{width:min(860px,100%);max-height:100%;display:flex;flex-direction:column}
+.validationHeader{display:flex;align-items:center;gap:12px}
+.validationHeader h2{margin:0}
+.issueList{overflow:auto;display:grid;gap:10px;margin-top:14px;padding-right:4px}
+.issueCard{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff}
+.issueTop{display:flex;align-items:flex-start;gap:10px}
+.issueIcon{font-size:20px}
+.issueBody{flex:1}
+.issueTitle{font-weight:650}
+.issueMeta{font-size:12px;color:var(--muted);margin-top:3px}
+.issueSuggestion{font-size:13px;line-height:1.45;margin-top:8px}
+.issueActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.summaryStrip{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.warningBadge{background:var(--warn-bg);color:var(--warn-text)}
+.okBadge{background:var(--ok-bg);color:var(--ok-text)}
+.startDialog{width:min(1120px,100%);max-height:100%}
+.startDialog .field{grid-template-columns:minmax(0,190px) minmax(0,1fr)}
+.startDialog .field select{min-width:0;width:100%;padding-right:38px}
+.startDialog .startupGrid>div{min-width:0}
+.welcomeBrand{
+  margin:0 0 6px;font-family:var(--font-display);font-size:clamp(34px,5vw,48px);font-weight:700;
+  letter-spacing:-.02em;line-height:1;color:var(--accent-deep);
+}
+.welcomeLead{font-size:14px;max-width:46ch;margin:0 0 18px;color:var(--muted)}
+.presetHero{
+  width:min(640px,100%);margin:4px 0 18px;padding:16px 18px 17px;border:1px solid #aebfaa;
+  border-radius:14px;background:linear-gradient(180deg,#f8fcf6,#e7f0e4);box-shadow:var(--shadow-soft);
+}
+.presetHero label{
+  display:block;margin-bottom:8px;font-family:var(--font-display);font-size:15px;font-weight:650;
+  letter-spacing:.01em;color:var(--accent-deep);
+}
+.presetHero select{
+  display:block;width:100%;min-width:0;height:52px;padding:0 48px 0 16px;border:2px solid var(--accent);
+  border-radius:12px;background:#fff;color:var(--text);font-size:17px;font-weight:650;line-height:52px;
+  cursor:pointer;box-shadow:0 0 0 3px var(--accent-soft);
+}
+.presetHero select:hover,.presetHero select:focus{
+  border-color:var(--accent-deep);box-shadow:0 0 0 4px #5f7f6433;outline:none;
+}
+.presetHero .rangeHint{margin:8px 2px 0}
+.orientationTabs,.sizeTabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.orientationTab,.sizeTab{
+  padding:11px;border:1px solid var(--line);border-radius:10px;background:#fff;text-align:center;cursor:pointer;
+}
+.orientationTab.active,.sizeTab.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-deep)}
+.orientationPreview{display:inline-block;width:36px;height:24px;border:2px solid currentColor;border-radius:3px;vertical-align:middle;margin-right:7px}
+.orientationTab[data-orientation="portrait"] .orientationPreview{width:24px;height:36px}
+.startupGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+.startupSummary{margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.rangeHint{font-size:11px;color:var(--muted);margin-top:-4px}
+.roundNotice{color:var(--warn-text)}
+.fullSpan{grid-column:1/-1}
+@keyframes modalIn{from{opacity:0}to{opacity:1}}
+@keyframes dialogRise{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes welcomePulse{
+  0%,100%{box-shadow:0 0 0 0 #5f7f6400}
+  50%{box-shadow:0 0 0 6px #5f7f6422}
+}
+#welcome .dialogActions .primary{animation:welcomePulse 2.8s ease-in-out 2}
+@media(max-width:620px){.startupGrid{grid-template-columns:1fr}.startDialog .field{grid-template-columns:1fr}}
 @media(max-width:760px){.importLayout{grid-template-columns:1fr}.importPreviewWrap{min-height:180px;height:min(36vh,280px)}}
 /* v20.20 — Exact and Almost Exact import/simplification options */
 .importDialog{width:min(1440px,100%);height:min(920px,100%);max-height:100%;overflow:hidden;display:flex;flex-direction:column;padding:16px 18px}
@@ -41,24 +373,38 @@ button,input,select{font:inherit;max-width:100%}button{background:var(--panel2);
 .importDialog .importPaletteChip{width:13px;height:13px}
 .importDialog .dialogActions{margin-top:8px;flex:0 0 auto}
 @media(max-height:760px){.importDialog{height:98vh;padding:10px 12px}.importDialog>h2{font-size:18px;margin-bottom:6px}.importDialog .help{font-size:10px;line-height:1.2}.importDialog .radioCard{padding:3px 5px}.importDialog .field{margin:2px 0}.importDialog .field input,.importDialog .field select{height:28px}.importDialog h3{margin:4px 0 2px}.importDialog .dialogActions{margin-top:5px}}
-
-
-.pdfDialog{width:min(1320px,100%);max-height:100%;display:flex;flex-direction:column}.pdfLayout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:18px;min-height:0}.pdfPreviewWrap{background:#fff;border:1px solid var(--line);border-radius:10px;overflow:auto;min-height:200px;display:flex;align-items:center;justify-content:center;padding:14px}.pdfPreviewWrap canvas{max-width:100%;max-height:42vh;box-shadow:0 3px 18px #0005;cursor:pointer}.sectionChooser{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;max-height:160px;overflow:auto;padding:5px;border:1px solid var(--line);border-radius:8px}.sectionChoice{padding:6px 3px;font-size:11px;text-align:center}.sectionChoice.selected{background:var(--accent);border-color:var(--accent)}.pdfControls{overflow:auto;padding-right:3px;min-width:0}.pdfControls .field{grid-template-columns:1fr minmax(0,120px)}.pdfNote{border-left:3px solid var(--accent);padding:8px 10px;background:#ffffff08;border-radius:0 7px 7px 0}.miniActions{display:flex;gap:7px;margin:7px 0}.miniActions button{flex:1}.pageEstimate{font-weight:650;margin-top:8px}@media(max-width:820px){.pdfLayout{grid-template-columns:1fr}.pdfPreviewWrap{min-height:180px}.pdfDialog{overflow:auto}}
+.pdfDialog{width:min(1320px,100%);max-height:100%;display:flex;flex-direction:column}
+.pdfLayout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:18px;min-height:0}
+.pdfPreviewWrap{
+  background:#fff;border:1px solid var(--line);border-radius:10px;overflow:auto;min-height:200px;
+  display:flex;align-items:center;justify-content:center;padding:14px;
+}
+.pdfPreviewWrap canvas{max-width:100%;max-height:42vh;box-shadow:0 3px 18px #24332922;cursor:pointer}
+.sectionChooser{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;max-height:160px;overflow:auto;padding:5px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.sectionChoice{padding:6px 3px;font-size:11px;text-align:center}
+.sectionChoice.selected{background:var(--accent);border-color:var(--accent);color:#fff}
+.pdfControls{overflow:auto;padding-right:3px;min-width:0}
+.pdfControls .field{grid-template-columns:1fr minmax(0,120px)}
+.pdfNote{border-left:3px solid var(--accent);padding:8px 10px;background:var(--accent-soft);border-radius:0 7px 7px 0}
+.miniActions{display:flex;gap:7px;margin:7px 0}
+.miniActions button{flex:1}
+.pageEstimate{font-weight:650;margin-top:8px}
+@media(max-width:820px){.pdfLayout{grid-template-columns:1fr}.pdfPreviewWrap{min-height:180px}.pdfDialog{overflow:auto}}
 @media(max-width:950px){.workspace{--left-width:198px;--right-width:260px}}
-
-.importOptionRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:start}.importOptionRow .field{margin:0}.importOptionRow .autoColorToggle{white-space:nowrap}@media(max-width:760px){.importOptionRow{grid-template-columns:1fr}}
-
+.importOptionRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:start}
+.importOptionRow .field{margin:0}
+.importOptionRow .autoColorToggle{white-space:nowrap}
+@media(max-width:760px){.importOptionRow{grid-template-columns:1fr}}
 /* v20.20 — import option checkboxes immediately beside labels */
 .importOptionRow{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px}
 .importInlineOption{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;cursor:pointer;font-size:12px;line-height:1}
 .importInlineOption input{appearance:auto!important;width:18px!important;height:18px!important;min-width:18px;margin:0;accent-color:var(--accent)}
 @media(max-width:760px){.importOptionRow{display:flex;flex-wrap:wrap}}
-
 /* PWA / iPhone layout — keep everything inside the screen */
 @media(max-width:760px){
   .app{grid-template-rows:auto auto minmax(0,1fr) auto}
   .top{flex-wrap:wrap;gap:6px;padding:8px 10px;min-height:0}
-  .brand{flex:1 1 auto;font-size:13px;max-width:calc(100% - 8px)}
+  .brand{flex:1 1 auto;font-size:15px;max-width:calc(100% - 8px)}
   .brand .badge{display:none}
   .projectName{flex:1 1 100%;width:100%;max-width:100%;font-size:14px;text-align:left}
   .spacer{display:none}
@@ -76,18 +422,9 @@ button,input,select{font:inherit;max-width:100%}button{background:var(--panel2);
   .workspace > .center{grid-column:1;grid-row:1;min-width:0;min-height:0;overflow:hidden}
   .workspace > .left,
   .workspace > .right{
-    position:absolute;
-    top:0;
-    bottom:0;
-    width:min(86vw,300px);
-    max-width:100%;
-    z-index:25;
-    opacity:1 !important;
-    overflow:auto !important;
-    padding:10px 12px !important;
-    border:0 !important;
-    box-shadow:0 8px 28px #000a;
-    background:var(--panel);
+    position:absolute;top:0;bottom:0;width:min(86vw,300px);max-width:100%;z-index:25;
+    opacity:1 !important;overflow:auto !important;padding:10px 12px !important;border:0 !important;
+    box-shadow:0 8px 28px #24332933;background:var(--panel);
   }
   .workspace > .left{left:0;transform:translateX(-105%)}
   .workspace > .right{right:0;transform:translateX(105%)}
@@ -106,27 +443,40 @@ button,input,select{font:inherit;max-width:100%}button{background:var(--panel2);
   .canvasWrap{padding:12px}
   .patternPanel.visible{grid-template-columns:1fr;grid-template-rows:minmax(0,38%) minmax(0,1fr)}
   .patternText{border-left:0;border-top:1px solid var(--line);min-height:0;padding:12px}
-  .dialog{width:100%;max-width:100%;max-height:100%;border-radius:12px;padding:14px}
+  .dialog{width:100%;max-width:100%;max-height:100%;border-radius:14px;padding:14px}
   .vectorDialog,.importDialog,.pdfDialog,.startDialog,.validationDialog{width:100%;height:auto;max-height:100%}
   .vectorLayout,.importDialog .importLayout{grid-template-columns:1fr !important}
   .vectorViewport{min-height:180px}
   .dialogActions{justify-content:stretch}
   .dialogActions button{flex:1 1 auto}
   .status{gap:8px;font-size:11px;padding:6px 8px}
+  .welcomeBrand{font-size:32px}
 }
-body.standalone{background:#16181d}
-.busyOverlay{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;background:#000a;padding:max(12px,var(--safe-top)) max(12px,var(--safe-right)) max(12px,var(--safe-bottom)) max(12px,var(--safe-left))}
+body.standalone{background:var(--bg)}
+.busyOverlay{
+  position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
+  background:#24332966;padding:max(12px,var(--safe-top)) max(12px,var(--safe-right)) max(12px,var(--safe-bottom)) max(12px,var(--safe-left));
+}
 .busyOverlay.hidden{display:none!important}
-.busyCard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;min-width:min(280px,100%);text-align:center;box-shadow:0 16px 48px #0008}
-.busySpinner{width:28px;height:28px;margin:0 auto 12px;border:3px solid #ffffff22;border-top-color:var(--accent);border-radius:50%;animation:busySpin .8s linear infinite}
+.busyCard{
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+  min-width:min(280px,100%);text-align:center;box-shadow:var(--shadow);
+}
+.busySpinner{
+  width:28px;height:28px;margin:0 auto 12px;border:3px solid #5f7f6433;
+  border-top-color:var(--accent);border-radius:50%;animation:busySpin .8s linear infinite;
+}
 @keyframes busySpin{to{transform:rotate(360deg)}}
 #busyText{font-size:14px;color:var(--text)}
 .srFile{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;opacity:0}
+@media (prefers-reduced-motion: reduce){
+  .modal,.dialog,#welcome .dialogActions .primary,button{animation:none!important;transition:none!important}
+}
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">🧶 Mosaic Blanket Designer <span class="badge">v20.47</span></div><input id="projectName" class="projectName" value="" placeholder="Project name"><div class="spacer"></div><button id="newBtn">New</button><button id="openBtn">Open</button><button id="undoBtn" title="Undo">↶ Undo</button><button id="redoBtn" title="Redo">↷ Redo</button><button id="saveBtn" class="primary">Save Project</button><input id="projectFile" type="file" accept=".mosaic,.json" hidden></header>
+<header class="top"><div class="brand">Mosaic <span class="badge">v20.48</span></div><input id="projectName" class="projectName" value="" placeholder="Project name"><div class="spacer"></div><button id="newBtn">New</button><button id="openBtn">Open</button><button id="undoBtn" title="Undo">↶ Undo</button><button id="redoBtn" title="Redo">↷ Redo</button><button id="saveBtn" class="primary">Save Project</button><input id="projectFile" type="file" accept=".mosaic,.json" hidden></header>
 <nav class="toolbar">
 <button class="tool" data-tool="paint" title="Change one stitch at a time (P)">✏ Paint Stitch</button><span class="sep"></span><button id="mirrorBtn">⇆ Mirror</button><button id="clearBtn">Clear</button><span class="sep"></span><button id="importBtn">Import Image</button><input id="imageFile" class="srFile" type="file" accept="image/*"><button id="exportPngBtn">Export Chart PNG</button><button id="exportPdfBtn" class="primary">Download PDF</button><button id="exportAllSizesPdfBtn" title="Build a separate PDF for every blanket size">All Sizes PDFs</button>
 </nav>
@@ -170,7 +520,7 @@ body.standalone{background:#16181d}
 
 <div id="pdfModal" class="modal hidden"><div class="dialog pdfDialog"><div class="validationHeader"><div><h2>PDF pattern layout <span class="badge">Download · build 35</span></h2><div class="help">Build a letter-size printable pattern with a numbered overview and enlarged section charts.</div></div><div class="spacer"></div><button id="closePdf">✕</button></div><div class="pdfLayout"><div class="pdfPreviewWrap"><canvas id="pdfOverviewPreview" width="720" height="560"></canvas></div><div class="pdfControls"><section class="section"><h3>Paper</h3><div class="field"><label>Orientation</label><select id="pdfOrientation"><option value="auto">Automatic</option><option value="portrait">Portrait</option><option value="landscape">Landscape</option></select></div><p id="orientationHint" class="help"></p></section><section class="section"><h3>Section size</h3><div class="field"><label>Stitches per section</label><input id="sectionCols" type="number" min="5" max="100" value="25"></div><div class="field"><label>Rows per section</label><input id="sectionRows" type="number" min="5" max="100" value="30"></div><p class="help">The full image is divided into numbered blocks. Edge sections may contain fewer stitches or rows.</p></section><section class="section"><h3>Pages to include</h3><label><input id="includeOverview" type="checkbox" checked> Numbered full-image overview</label><br><label><input id="includePattern" type="checkbox" checked> Written row-by-row pattern</label><div class="field"><label>Written pattern position</label><select id="patternPosition"><option value="top" selected>Top of PDF</option><option value="bottom">Bottom of PDF</option></select></div><div class="miniActions"><button id="selectAllSections">Select all</button><button id="clearSections">Clear</button></div><div id="sectionChooser" class="sectionChooser"></div><div id="pageEstimate" class="pageEstimate"></div></section><div class="pdfNote help">Click a numbered block in the preview or section list to include or exclude it. On desktop: creates a folder named after the project (without size) and saves the PDF inside it. On iPhone: downloads the PDF file. <strong>All Sizes PDFs</strong> rebuilds each size larger than 36×36 in from the original image with the detail engine (not a simple shrink), regenerates each pattern, and saves one PDF per size into that same folder.</div></div></div><div class="dialogActions"><button id="cancelPdf">Cancel</button><button id="buildAllSizesPdf">All Sizes PDFs</button><button id="buildPdf" class="primary">Download PDF</button></div></div></div>
 <div id="validationModal" class="modal hidden"><div class="dialog validationDialog"><div class="validationHeader"><div><h2>Design validation</h2><div id="validationModalSummary" class="help"></div></div><div class="spacer"></div><button id="closeValidation">✕</button></div><div id="validationBadges" class="summaryStrip"></div><div id="validationIssues" class="issueList"></div><div class="dialogActions"><button id="fixAllSafe">Apply all safe fixes</button><button id="closeValidationBottom" class="primary">Done</button></div></div></div>
-<div id="welcome" class="modal"><div class="dialog startDialog"><h2>Start a blanket project</h2><p class="help">Set the mosaic size now. After creating the project, the image picker opens automatically. Choose “import later” when your artwork is not ready.</p><div class="presetHero"><label for="blanketPreset">Blanket size</label><select id="blanketPreset" aria-label="Blanket size preset"><option value="custom">Custom dimensions</option><option value="lovey">Lovey — 12 × 12 in</option><option value="security">Security blanket — 14 × 17 in</option><option value="stroller">Stroller — 30 × 35 in</option><option value="receiving">Receiving blanket — 36 × 36 in</option><option value="crib">Crib — 36 × 50 in</option><option value="lapghan">Lapghan — 36 × 48 in</option><option value="throw" selected>Throw — 50 × 60 in</option><option value="twin">Twin — 66 × 90 in</option><option value="full">Full — 80 × 90 in</option><option value="queen">Queen — 90 × 100 in</option><option value="king">King — 108 × 100 in</option><option value="californiaKing">California King — 104 × 108 in</option></select><div class="rangeHint">Presets are common planning dimensions. Custom dimensions remain fully editable.</div></div><div class="section"><h3>Blanket orientation</h3><div class="orientationTabs"><button type="button" id="orientationLandscape" class="orientationTab" data-orientation="landscape"><span class="orientationPreview"></span>Landscape</button><button type="button" id="orientationPortrait" class="orientationTab active" data-orientation="portrait"><span class="orientationPreview"></span>Portrait</button></div><div class="rangeHint">Changing orientation swaps the long and short sides immediately.</div></div><div class="sizeTabs"><button type="button" id="sizeByGrid" class="sizeTab">Stitches and rows</button><button type="button" id="sizeByInches" class="sizeTab active">Finished size in inches</button></div><div class="startupGrid"><div id="gridSizeFields" class="hidden"><div class="field"><label>Stitches wide</label><input id="startGridW" type="number" min="1" max="2000" value="48"></div><div class="field"><label>Rows high</label><input id="startGridH" type="number" min="1" max="2000" value="60"></div></div><div id="inchSizeFields" class="hidden"><div class="field"><label>Width (inches)</label><input id="startInchesW" type="number" min="0.25" max="500" step="0.25" value="40"></div><div class="field"><label>Height (inches)</label><input id="startInchesH" type="number" min="0.25" max="500" step="0.25" value="50"></div></div><div><div class="field"><label>Yarn weight</label><select id="startYarnWeight"><option value="lace">0 — Lace</option><option value="superfine">1 — Super Fine</option><option value="fine">2 — Fine</option><option value="light">3 — Light</option><option value="medium" selected>4 — Medium</option><option value="bulky">5 — Bulky</option><option value="superbulky">6 — Super Bulky</option><option value="jumbo">7 — Jumbo</option></select></div><div class="field"><label>Stitches per inch</label><input id="startSpi" type="number" min="0.25" max="20" step="0.1" value="4.5"></div><div id="gaugeHint" class="rangeHint"></div></div><div id="startupSummary" class="startupSummary fullSpan"></div></div><p class="help roundNotice">Calculated stitch and row counts are always rounded up to the next whole number.</p><p class="help"><strong>Prototype note:</strong> Yarn-weight ranges are starting suggestions only. Your swatch gauge should be used when available.</p><div class="dialogActions"><button id="continueWelcome" class="hidden">Continue last project</button><button id="importLaterWelcome">Create project — import later</button><label id="closeWelcome" class="primary" for="welcomeImageFile">Create project &amp; import image</label><input id="welcomeImageFile" class="srFile" type="file" accept="image/*"></div></div></div>
+<div id="welcome" class="modal"><div class="dialog startDialog"><p class="welcomeBrand">Mosaic</p><h2>Welcome to your craft studio</h2><p class="help welcomeLead">Choose a blanket size to begin. Bring a photo now, or start a blank chart and import later—whichever feels right.</p><div class="presetHero"><label for="blanketPreset">Blanket size</label><select id="blanketPreset" aria-label="Blanket size preset"><option value="custom">Custom dimensions</option><option value="lovey">Lovey — 12 × 12 in</option><option value="security">Security blanket — 14 × 17 in</option><option value="stroller">Stroller — 30 × 35 in</option><option value="receiving">Receiving blanket — 36 × 36 in</option><option value="crib">Crib — 36 × 50 in</option><option value="lapghan">Lapghan — 36 × 48 in</option><option value="throw" selected>Throw — 50 × 60 in</option><option value="twin">Twin — 66 × 90 in</option><option value="full">Full — 80 × 90 in</option><option value="queen">Queen — 90 × 100 in</option><option value="king">King — 108 × 100 in</option><option value="californiaKing">California King — 104 × 108 in</option></select><div class="rangeHint">Presets are common planning dimensions. Custom dimensions remain fully editable.</div></div><div class="section"><h3>Blanket orientation</h3><div class="orientationTabs"><button type="button" id="orientationLandscape" class="orientationTab" data-orientation="landscape"><span class="orientationPreview"></span>Landscape</button><button type="button" id="orientationPortrait" class="orientationTab active" data-orientation="portrait"><span class="orientationPreview"></span>Portrait</button></div><div class="rangeHint">Changing orientation swaps the long and short sides immediately.</div></div><div class="sizeTabs"><button type="button" id="sizeByGrid" class="sizeTab">Stitches and rows</button><button type="button" id="sizeByInches" class="sizeTab active">Finished size in inches</button></div><div class="startupGrid"><div id="gridSizeFields" class="hidden"><div class="field"><label>Stitches wide</label><input id="startGridW" type="number" min="1" max="2000" value="48"></div><div class="field"><label>Rows high</label><input id="startGridH" type="number" min="1" max="2000" value="60"></div></div><div id="inchSizeFields" class="hidden"><div class="field"><label>Width (inches)</label><input id="startInchesW" type="number" min="0.25" max="500" step="0.25" value="40"></div><div class="field"><label>Height (inches)</label><input id="startInchesH" type="number" min="0.25" max="500" step="0.25" value="50"></div></div><div><div class="field"><label>Yarn weight</label><select id="startYarnWeight"><option value="lace">0 — Lace</option><option value="superfine">1 — Super Fine</option><option value="fine">2 — Fine</option><option value="light">3 — Light</option><option value="medium" selected>4 — Medium</option><option value="bulky">5 — Bulky</option><option value="superbulky">6 — Super Bulky</option><option value="jumbo">7 — Jumbo</option></select></div><div class="field"><label>Stitches per inch</label><input id="startSpi" type="number" min="0.25" max="20" step="0.1" value="4.5"></div><div id="gaugeHint" class="rangeHint"></div></div><div id="startupSummary" class="startupSummary fullSpan"></div></div><p class="help roundNotice">Calculated stitch and row counts are always rounded up to the next whole number.</p><p class="help">Yarn-weight gauges are friendly starting points—use your own swatch when you have one.</p><div class="dialogActions"><button id="continueWelcome" class="hidden">Continue where you left off</button><button id="importLaterWelcome">Start a blank project</button><label id="closeWelcome" class="primary" for="welcomeImageFile">Start with a photo</label><input id="welcomeImageFile" class="srFile" type="file" accept="image/*"></div></div></div>
 <script>
 (() => {
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -276,7 +626,7 @@ function importImage(file){if(!file||state._importImageOpen)return;state._import
 function selectedImportMode(){return document.querySelector('input[name="importMode"]:checked').value}
 function importDimensions(){const mode=selectedImportMode(),axis=$('#importLimitAxis').value,max=Math.max(8,Math.min(maxGridSide(),+$('#importMaxCount').value||120)),img=state.pendingImage;let w=state.w,h=state.h;if(mode==='resize'){if(axis==='width'){w=max;h=Math.max(8,Math.round(max*img.height/img.width))}else{h=max;w=Math.max(8,Math.round(max*img.width/img.height))}}else if(mode==='crop'){const ratio=state.w/state.h;if(axis==='width'){w=max;h=Math.max(8,Math.round(max/ratio))}else{h=max;w=Math.max(8,Math.round(max*ratio))}}const clamped=clampGridSize(w,h);return {w:clamped.w,h:clamped.h}}
 function resetCropToAspect(preserveCenter=false){if(!state.pendingImage)return;const d=importDimensions(),target=d.w/d.h,imgRatio=state.pendingImage.width/state.pendingImage.height,scale=Math.max(.2,Math.min(1,(+$('#cropScale').value||88)/100));let maxW=1,maxH=1;if(imgRatio>target)maxW=target/imgRatio;else maxH=imgRatio/target;const w=maxW*scale,h=maxH*scale,cx=preserveCenter?state.crop.x+state.crop.w/2:.5,cy=preserveCenter?state.crop.y+state.crop.h/2:.5;state.crop={x:Math.max(0,Math.min(1-w,cx-w/2)),y:Math.max(0,Math.min(1-h,cy-h/2)),w,h};$('#cropScaleValue').textContent=Math.round(scale*100)+'%'}
-function updateImportPreview(){if(!state.pendingImage)return;const cropMode=selectedImportMode()==='crop';$('#cropControls').classList.toggle('hidden',!cropMode);const c=$('#importPreview'),ctx=c.getContext('2d',{willReadFrequently:true}),img=state.pendingImage.img,mode=selectedImportMode(),d=importDimensions();ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#111';ctx.fillRect(0,0,c.width,c.height);const maxW=1080,maxH=680,targetRatio=d.w/d.h;let pw=maxW,ph=Math.round(pw/targetRatio);if(ph>maxH){ph=maxH;pw=Math.round(ph*targetRatio)}const work=document.createElement('canvas');work.width=Math.max(24,Math.min(1080,pw));work.height=Math.max(24,Math.min(680,ph));const wx=work.getContext('2d',{willReadFrequently:true});const exactImport=$('#importExact').checked,almostExactImport=$('#importAlmostExact').checked;wx.imageSmoothingEnabled=!(exactImport||almostExactImport);if(wx.imageSmoothingEnabled)wx.imageSmoothingQuality='high';wx.fillStyle='#fff';wx.fillRect(0,0,work.width,work.height);if(mode==='stretch')wx.drawImage(img,0,0,work.width,work.height);else if(mode==='crop'){const r=state.crop;wx.drawImage(img,r.x*img.width,r.y*img.height,r.w*img.width,r.h*img.height,0,0,work.width,work.height)}else{const sc=Math.min(work.width/img.width,work.height/img.height),ww=img.width*sc,hh=img.height*sc;wx.drawImage(img,(work.width-ww)/2,(work.height-hh)/2,ww,hh)}const raw=wx.getImageData(0,0,work.width,work.height),k=+$('#importColorCount').value,simp=exactImport?'exact':almostExactImport?'almostExact':$('#importSimplify').value,passes=simp==='exact'?24:simp==='almostExact'?18:simp==='high'?12:simp==='medium'?9:6;let baseQ=quantize(raw.data,k,passes);if($('#importAutoColor').checked)baseQ=consolidateAutoColors(baseQ);if(!importSelectedColors||importSelectedColors.length!==baseQ.palette.length)importSelectedColors=baseQ.palette.map(()=>true);state.pendingImportPalette=baseQ.palette.map(c=>[...c]);state.pendingImportCounts=baseQ.counts?[...baseQ.counts]:null;const q=applyPaletteSelection(baseQ,importSelectedColors);for(let i=0,p=0;i<raw.data.length;i+=4,p++){const col=q.palette[q.indexes[p]]||[255,255,255];raw.data[i]=col[0];raw.data[i+1]=col[1];raw.data[i+2]=col[2];raw.data[i+3]=255}wx.putImageData(raw,0,0);const scale=Math.min(c.width/work.width,c.height/work.height),dw=work.width*scale,dh=work.height*scale,ox=(c.width-dw)/2,oy=(c.height-dh)/2;ctx.imageSmoothingEnabled=false;ctx.drawImage(work,ox,oy,dw,dh);state.previewMap={ox,oy,dw,dh};if(mode==='crop'){ctx.strokeStyle='#9b7cff';ctx.lineWidth=3;ctx.strokeRect(ox,oy,dw,dh)}const total=baseQ.counts.reduce((a,b)=>a+b,0)||1;
+function updateImportPreview(){if(!state.pendingImage)return;const cropMode=selectedImportMode()==='crop';$('#cropControls').classList.toggle('hidden',!cropMode);const c=$('#importPreview'),ctx=c.getContext('2d',{willReadFrequently:true}),img=state.pendingImage.img,mode=selectedImportMode(),d=importDimensions();ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#111';ctx.fillRect(0,0,c.width,c.height);const maxW=1080,maxH=680,targetRatio=d.w/d.h;let pw=maxW,ph=Math.round(pw/targetRatio);if(ph>maxH){ph=maxH;pw=Math.round(ph*targetRatio)}const work=document.createElement('canvas');work.width=Math.max(24,Math.min(1080,pw));work.height=Math.max(24,Math.min(680,ph));const wx=work.getContext('2d',{willReadFrequently:true});const exactImport=$('#importExact').checked,almostExactImport=$('#importAlmostExact').checked;wx.imageSmoothingEnabled=!(exactImport||almostExactImport);if(wx.imageSmoothingEnabled)wx.imageSmoothingQuality='high';wx.fillStyle='#fff';wx.fillRect(0,0,work.width,work.height);if(mode==='stretch')wx.drawImage(img,0,0,work.width,work.height);else if(mode==='crop'){const r=state.crop;wx.drawImage(img,r.x*img.width,r.y*img.height,r.w*img.width,r.h*img.height,0,0,work.width,work.height)}else{const sc=Math.min(work.width/img.width,work.height/img.height),ww=img.width*sc,hh=img.height*sc;wx.drawImage(img,(work.width-ww)/2,(work.height-hh)/2,ww,hh)}const raw=wx.getImageData(0,0,work.width,work.height),k=+$('#importColorCount').value,simp=exactImport?'exact':almostExactImport?'almostExact':$('#importSimplify').value,passes=simp==='exact'?24:simp==='almostExact'?18:simp==='high'?12:simp==='medium'?9:6;let baseQ=quantize(raw.data,k,passes);if($('#importAutoColor').checked)baseQ=consolidateAutoColors(baseQ);if(!importSelectedColors||importSelectedColors.length!==baseQ.palette.length)importSelectedColors=baseQ.palette.map(()=>true);state.pendingImportPalette=baseQ.palette.map(c=>[...c]);state.pendingImportCounts=baseQ.counts?[...baseQ.counts]:null;const q=applyPaletteSelection(baseQ,importSelectedColors);for(let i=0,p=0;i<raw.data.length;i+=4,p++){const col=q.palette[q.indexes[p]]||[255,255,255];raw.data[i]=col[0];raw.data[i+1]=col[1];raw.data[i+2]=col[2];raw.data[i+3]=255}wx.putImageData(raw,0,0);const scale=Math.min(c.width/work.width,c.height/work.height),dw=work.width*scale,dh=work.height*scale,ox=(c.width-dw)/2,oy=(c.height-dh)/2;ctx.imageSmoothingEnabled=false;ctx.drawImage(work,ox,oy,dw,dh);state.previewMap={ox,oy,dw,dh};if(mode==='crop'){ctx.strokeStyle='#5f7f64';ctx.lineWidth=3;ctx.strokeRect(ox,oy,dw,dh)}const total=baseQ.counts.reduce((a,b)=>a+b,0)||1;
 $('#importPalette').innerHTML=baseQ.palette.map((p,i)=>`<label class="importPaletteItem"><input type="checkbox" data-color-index="${i}" ${importSelectedColors[i]?'checked':''}><span class="importPaletteChip" style="background:${rgbHex(...p)}"></span><strong>${inherentColorName(rgbHex(...p))}</strong><span class="importPalettePct">${Math.round(baseQ.counts[i]/total*100)}%</span></label>`).join('');
 $('#importPalette').querySelectorAll('input').forEach(cb=>cb.onchange=()=>{const boxes=[...$('#importPalette').querySelectorAll('input')];if(!boxes.some(x=>x.checked)){cb.checked=true;status('At least one import color must remain selected');return}importSelectedColors=boxes.map(x=>x.checked);updateImportPreview()});$('#importResult').textContent=`Live preview: ${q.palette.length} selected color${q.palette.length===1?'':'s'} · Resulting grid: ${d.w} stitches × ${d.h} rows`}
 function confirmImport(){if(!state.pendingImage)return;const btn=$('#confirmImport');if(btn){btn.disabled=true;btn.textContent='Creating…'}showBusy('Creating design…');status('Creating design…');const mode=selectedImportMode(),d=importDimensions();state.imageData={src:state.pendingImage.src,width:state.pendingImage.width,height:state.pendingImage.height};if(mode!=='stretch'){state.w=d.w;state.h=d.h;initCells();syncInputs()}else{const clamped=clampGridSize(state.w,state.h);if(clamped.clamped){alert(`This project (${state.w}×${state.h}) exceeds the editor maximum.`);if(btn){btn.disabled=false;btn.textContent='Create design'}hideBusy();return}}$('#projectName').value=withBlanketSizeSuffix($('#projectName').value||'');state.imageData.importMode=mode;state.imageData.crop={...state.crop};state.imageData.importPalette=state.pendingImportPalette?state.pendingImportPalette.map(c=>[...c]):null;state.imageData.importPaletteCounts=Array.isArray(state.pendingImportCounts)?[...state.pendingImportCounts]:null;state.imageData.importSelection=importSelectedColors?[...importSelectedColors]:null;state.imageData.importActivePalette=state.pendingImportPalette?state.pendingImportPalette.filter((_,i)=>!importSelectedColors||importSelectedColors[i]).map(c=>[...c]):null;state.imageData.importColorCount=Math.max(1,state.imageData.importActivePalette?.length||+$('#importColorCount').value||1);state.imageData.importAutoColor=$('#importAutoColor').checked;state.imageData.importAlmostExact=$('#importAlmostExact').checked;state.imageData.importExact=$('#importExact').checked;state.imageData.vectorDetail=100;state.imageData.vectorSmoothing=0;state.imageData.vectorFreckling=100;state.imageData.vectorClusterSize=4;state.pendingImage=null;$('#simplify').value=state.imageData.importExact?'exact':state.imageData.importAlmostExact?'almostExact':$('#importSimplify').value;$('#fitMode').value=mode==='crop'?'cover':mode;$('#importDialog').classList.add('hidden');$('#reconvertBtn').disabled=false;runWhenIdle(()=>{reconvertDirect(()=>{hideBusy();if(btn){btn.disabled=false;btn.textContent='Create design'}state.autoFit=true;scheduleFit();schedulePersist()})})}
@@ -571,7 +921,7 @@ const pdfState={selected:new Set()};
 function pdfOrientation(){const chosen=$('#pdfOrientation').value;if(chosen!=='auto')return chosen;return state.w>=state.h?'landscape':'portrait'}
 function sectionLayout(cwOverride,rhOverride){const cw=Math.max(5,cwOverride??(+$('#sectionCols').value||25)),rh=Math.max(5,rhOverride??(+$('#sectionRows').value||30)),cols=Math.ceil(state.w/cw),rows=Math.ceil(state.h/rh),items=[];let n=1;for(let sy=0;sy<rows;sy++)for(let sx=0;sx<cols;sx++){const x=sx*cw,y=sy*rh,w=Math.min(cw,state.w-x),h=Math.min(rh,state.h-y);items.push({n:n++,sx,sy,x,y,w,h})}return {cw,rh,cols,rows,items}}
 function colorAt(x,y){return state.colors[state.cells[idx(x,y)]]?.hex||'#ffffff'}
-function drawPdfOverview(){const c=$('#pdfOverviewPreview'),ctx=c.getContext('2d'),lay=sectionLayout(),pad=45;ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);const aw=c.width-pad*2,ah=c.height-pad*2,scale=Math.min(aw/state.w,ah/state.h),ox=(c.width-state.w*scale)/2,oy=(c.height-state.h*scale)/2;for(let y=0;y<state.h;y++)for(let x=0;x<state.w;x++){ctx.fillStyle=colorAt(x,y);ctx.fillRect(ox+x*scale,oy+y*scale,Math.ceil(scale+.2),Math.ceil(scale+.2))}ctx.lineWidth=2;ctx.font='bold 16px Segoe UI';ctx.textAlign='center';ctx.textBaseline='middle';for(const sec of lay.items){const x=ox+sec.x*scale,y=oy+sec.y*scale,w=sec.w*scale,h=sec.h*scale,sel=pdfState.selected.has(sec.n);ctx.strokeStyle=sel?'#6f48e8':'#666';ctx.lineWidth=sel?3:1.5;ctx.strokeRect(x,y,w,h);ctx.fillStyle=sel?'rgba(111,72,232,.20)':'rgba(255,255,255,.22)';ctx.fillRect(x,y,w,h);const label=String(sec.n),tw=Math.max(27,ctx.measureText(label).width+14);ctx.fillStyle=sel?'#6f48e8':'#555';ctx.fillRect(x+w/2-tw/2,y+h/2-14,tw,28);ctx.fillStyle='#fff';ctx.fillText(label,x+w/2,y+h/2)}ctx.fillStyle='#222';ctx.font='bold 18px Segoe UI';ctx.fillText($('#projectName').value||'Mosaic Pattern',c.width/2,20);c._pdfMap={ox,oy,scale,lay}}
+function drawPdfOverview(){const c=$('#pdfOverviewPreview'),ctx=c.getContext('2d'),lay=sectionLayout(),pad=45;ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);const aw=c.width-pad*2,ah=c.height-pad*2,scale=Math.min(aw/state.w,ah/state.h),ox=(c.width-state.w*scale)/2,oy=(c.height-state.h*scale)/2;for(let y=0;y<state.h;y++)for(let x=0;x<state.w;x++){ctx.fillStyle=colorAt(x,y);ctx.fillRect(ox+x*scale,oy+y*scale,Math.ceil(scale+.2),Math.ceil(scale+.2))}ctx.lineWidth=2;ctx.font='bold 16px Segoe UI';ctx.textAlign='center';ctx.textBaseline='middle';for(const sec of lay.items){const x=ox+sec.x*scale,y=oy+sec.y*scale,w=sec.w*scale,h=sec.h*scale,sel=pdfState.selected.has(sec.n);ctx.strokeStyle=sel?'#5f7f64':'#666';ctx.lineWidth=sel?3:1.5;ctx.strokeRect(x,y,w,h);ctx.fillStyle=sel?'rgba(95,127,100,.22)':'rgba(255,255,255,.35)';ctx.fillRect(x,y,w,h);const label=String(sec.n),tw=Math.max(27,ctx.measureText(label).width+14);ctx.fillStyle=sel?'#5f7f64':'#555';ctx.fillRect(x+w/2-tw/2,y+h/2-14,tw,28);ctx.fillStyle='#fff';ctx.fillText(label,x+w/2,y+h/2)}ctx.fillStyle='#222';ctx.font='bold 18px Segoe UI';ctx.fillText($('#projectName').value||'Mosaic Pattern',c.width/2,20);c._pdfMap={ox,oy,scale,lay}}
 function rebuildSectionChooser(reset=false){const lay=sectionLayout();if(reset||!pdfState.selected.size){pdfState.selected=new Set(lay.items.map(s=>s.n))}else{pdfState.selected=new Set([...pdfState.selected].filter(n=>n<=lay.items.length))}const box=$('#sectionChooser');box.innerHTML='';lay.items.forEach(sec=>{const b=document.createElement('button');b.className='sectionChoice'+(pdfState.selected.has(sec.n)?' selected':'');b.textContent=sec.n;b.title=`Section ${sec.n}: stitches ${sec.x+1}-${sec.x+sec.w}, rows ${state.h-(sec.y+sec.h)+1}-${state.h-sec.y}`;b.onclick=()=>{pdfState.selected.has(sec.n)?pdfState.selected.delete(sec.n):pdfState.selected.add(sec.n);updatePdfDialog()};box.appendChild(b)});updatePdfDialog(false)}
 function updatePdfDialog(redrawChooser=true){const lay=sectionLayout();if(redrawChooser){$$('.sectionChoice').forEach((b,i)=>b.classList.toggle('selected',pdfState.selected.has(i+1)))}drawPdfOverview();const ori=pdfOrientation();$('#orientationHint').textContent=$('#pdfOrientation').value==='auto'?`Automatic choice: ${ori}, because the grid is ${state.w} × ${state.h}.`:`Using ${ori} letter pages.`;const base=($('#includeOverview').checked?1:0)+pdfState.selected.size;const patternPages=$('#includePattern').checked?Math.max(1,Math.ceil(state.h/(pdfOrientation()==='landscape'?62:78))):0;$('#pageEstimate').textContent=`Estimated pages: ${base+patternPages} (${pdfState.selected.size} enlarged sections)`}
 function defaultSectionSizing(){const landscape=state.w>=state.h,across=landscape?5:4,down=landscape?4:5;return {cw:Math.max(5,Math.ceil(state.w/across)),rh:Math.max(5,Math.ceil(state.h/down))}}
@@ -661,7 +1011,7 @@ window.addEventListener('pageshow',e=>{if(e.persisted)location.reload()});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persistProject()});
 $('#projectName').addEventListener('change',()=>{if(!isBlankProjectName($('#projectName').value))state.nameConfirmed=true;schedulePersist()});
 $('#projectName').addEventListener('blur',()=>{if(!isBlankProjectName($('#projectName').value))state.nameConfirmed=true;schedulePersist()});
-if('serviceWorker' in navigator){(async()=>{try{const EXPECT='mosaic-pwa-v47';const KEY='mosaic-sw-v47-cleared';const cached=localStorage.getItem(KEY);if(cached!==EXPECT){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));if('caches' in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)))}localStorage.setItem(KEY,EXPECT);location.replace('/mosaic/?v=47');return}const reg=await navigator.serviceWorker.register('/mosaic/sw.js?v=47',{scope:'/mosaic/'});reg.update?.()}catch(err){console.warn('Service worker registration failed',err)}})()}
+if('serviceWorker' in navigator){(async()=>{try{const EXPECT='mosaic-pwa-v48';const KEY='mosaic-sw-v48-cleared';const cached=localStorage.getItem(KEY);if(cached!==EXPECT){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));if('caches' in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)))}localStorage.setItem(KEY,EXPECT);location.replace('/mosaic/?v=48');return}const reg=await navigator.serviceWorker.register('/mosaic/sw.js?v=48',{scope:'/mosaic/'});reg.update?.()}catch(err){console.warn('Service worker registration failed',err)}})()}
 })();
 </script>
 </body></html>
