@@ -1,5 +1,5 @@
 /* Mosaic Blanket Designer service worker */
-const CACHE = 'mosaic-pwa-v55';
+const CACHE = 'mosaic-pwa-v56';
 const PDF_CACHE = 'mosaic-pdf-downloads';
 const ASSETS = [
   '/mosaic/',
@@ -70,7 +70,8 @@ function memoryPdfResponse(url) {
   if (key) pdfDownloads.delete(key);
   if (!item) return null;
   const rawName = String(item.name || 'mosaic-pattern.pdf');
-  const safe = rawName.replace(/[^\w.\-]+/g, '_');
+  const ascii = rawName.replace(/[^\x20-\x7E]/g, '_').replace(/["\\]/g, '').replace(/[^\w.\-]+/g, '_') || 'mosaic-pattern.pdf';
+  const safe = ascii.toLowerCase().endsWith('.pdf') ? ascii : (ascii + '.pdf');
   const asBinary = url.searchParams.get('binary') === '1';
   const encoded = encodeURIComponent(rawName);
   return new Response(item.buffer, {
