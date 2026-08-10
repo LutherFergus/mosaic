@@ -1,5 +1,5 @@
 /* Mosaic Blanket Designer service worker */
-const CACHE = 'mosaic-pwa-v51';
+const CACHE = 'mosaic-pwa-v52';
 const ASSETS = [
   '/mosaic/',
   '/mosaic/index.html',
@@ -54,14 +54,16 @@ self.addEventListener('fetch', (event) => {
           headers: { 'Content-Type': 'text/plain; charset=utf-8' }
         });
       }
-      const safe = String(item.name || 'mosaic-pattern.pdf').replace(/[^\w.\-]+/g, '_');
-      // binary=1 avoids iOS in-app PDF preview traps; attachment still downloads the file.
-      const asBinary = url.searchParams.get('binary') === '1';
+      const rawName = String(item.name || 'mosaic-pattern.pdf');
+      const safe = rawName.replace(/[^\w.\-]+/g, '_');
+      // binary=1 avoids iOS in-app PDF preview traps; attachment forces a real download.
+      const asBinary = url.searchParams.get('binary') === '1' || /iPhone|iPad|iPod/i.test((event.request.headers.get('user-agent')||''));
+      const encoded = encodeURIComponent(rawName);
       return new Response(item.buffer, {
         status: 200,
         headers: {
           'Content-Type': asBinary ? 'application/octet-stream' : 'application/pdf',
-          'Content-Disposition': `attachment; filename="${safe}"`,
+          'Content-Disposition': `attachment; filename="${safe}"; filename*=UTF-8''${encoded}`,
           'Cache-Control': 'no-store'
         }
       });
