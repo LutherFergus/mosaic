@@ -1,5 +1,6 @@
 /* Mosaic Blanket Designer service worker */
-const CACHE = 'mosaic-pwa-v52';
+const CACHE = 'mosaic-pwa-v53';
+const PDF_CACHE = 'mosaic-pdf-downloads';
 const ASSETS = [
   '/mosaic/',
   '/mosaic/index.html',
@@ -14,6 +15,10 @@ const pdfDownloads = new Map();
 
 self.addEventListener('message', (event) => {
   const data = event.data || {};
+  if (data.type === 'CLAIM_CLIENTS') {
+    event.waitUntil(self.clients.claim());
+    return;
+  }
   if (data.type === 'STORE_PDF' && data.key && data.buffer) {
     pdfDownloads.set(data.key, {
       buffer: data.buffer,
@@ -33,39 +38,71 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+      Promise.all(
+        keys
+          .filter((k) => k !== CACHE && k !== PDF_CACHE)
+          .map((k) => caches.delete(k))
+      )
     ).then(() => self.clients.claim())
   );
 });
+
+async function pdfCacheResponse(url) {
+  const cache = await caches.open(PDF_CACHE);
+  // Match without query string.
+  const exact = await cache.match(url.pathname);
+  if (exact) return exact;
+  const all = await cache.keys();
+  for (const req of all) {
+    try {
+      if (new URL(req.url).pathname === url.pathname) {
+        const hit = await cache.match(req);
+        if (hit) return hit;
+      }
+    } catch (_) {}
+  }
+  return null;
+}
+
+function memoryPdfResponse(url) {
+  const key = url.searchParams.get('key');
+  const item = key ? pdfDownloads.get(key) : null;
+  if (key) pdfDownloads.delete(key);
+  if (!item) return null;
+  const rawName = String(item.name || 'mosaic-pattern.pdf');
+  const safe = rawName.replace(/[^\w.\-]+/g, '_');
+  const asBinary = url.searchParams.get('binary') === '1';
+  const encoded = encodeURIComponent(rawName);
+  return new Response(item.buffer, {
+    status: 200,
+    headers: {
+      'Content-Type': asBinary ? 'application/octet-stream' : 'application/pdf',
+      'Content-Disposition': `attachment; filename="${safe}"; filename*=UTF-8''${encoded}`,
+      'Cache-Control': 'no-store'
+    }
+  });
+}
 
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
   const url = new URL(req.url);
-  if (url.pathname.startsWith('/mosaic/download/')) {
+
+  // Never let PDF download URLs fall through to GitHub Pages (that returns 404.html,
+  // which Safari then saves as name.pdf.html).
+  if (url.pathname.startsWith('/mosaic/pdf-cache/') || url.pathname.startsWith('/mosaic/download/')) {
     event.respondWith((async () => {
-      const key = url.searchParams.get('key');
-      const item = key ? pdfDownloads.get(key) : null;
-      if (key) pdfDownloads.delete(key);
-      if (!item) {
-        return new Response('PDF expired. Tap Download PDF again.', {
-          status: 404,
-          headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-        });
+      if (url.pathname.startsWith('/mosaic/pdf-cache/')) {
+        const cached = await pdfCacheResponse(url);
+        if (cached) return cached;
+      } else {
+        const mem = memoryPdfResponse(url);
+        if (mem) return mem;
       }
-      const rawName = String(item.name || 'mosaic-pattern.pdf');
-      const safe = rawName.replace(/[^\w.\-]+/g, '_');
-      // binary=1 avoids iOS in-app PDF preview traps; attachment forces a real download.
-      const asBinary = url.searchParams.get('binary') === '1' || /iPhone|iPad|iPod/i.test((event.request.headers.get('user-agent')||''));
-      const encoded = encodeURIComponent(rawName);
-      return new Response(item.buffer, {
-        status: 200,
-        headers: {
-          'Content-Type': asBinary ? 'application/octet-stream' : 'application/pdf',
-          'Content-Disposition': `attachment; filename="${safe}"; filename*=UTF-8''${encoded}`,
-          'Cache-Control': 'no-store'
-        }
+      return new Response('PDF expired. Tap Download PDF again.', {
+        status: 404,
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' }
       });
     })());
     return;
