@@ -546,7 +546,7 @@ body.standalone{background:var(--bg)}
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand">Mosaic <span class="badge">v20.79</span></div><input id="projectName" class="projectName" value="" placeholder="Project name"><div class="spacer"></div><button id="newBtn">New</button><button id="openBtn">Open</button><button id="undoBtn" title="Undo">↶ Undo</button><button id="redoBtn" title="Redo">↷ Redo</button><button id="saveBtn" class="primary">Save Project</button><button id="importBtn">Import Image</button><input id="imageFile" class="srFile" type="file" accept="image/*,image/svg+xml,.svg"><input id="projectFile" type="file" accept=".mosaic,.json" hidden></header>
+<header class="top"><div class="brand">Mosaic <span class="badge">v20.80</span></div><input id="projectName" class="projectName" value="" placeholder="Project name"><div class="spacer"></div><button id="newBtn">New</button><button id="openBtn">Open</button><button id="undoBtn" title="Undo">↶ Undo</button><button id="redoBtn" title="Redo">↷ Redo</button><button id="saveBtn" class="primary">Save Project</button><button id="importBtn">Import Image</button><input id="imageFile" class="srFile" type="file" accept="image/*,image/svg+xml,.svg"><input id="projectFile" type="file" accept=".mosaic,.json" hidden></header>
 <nav class="toolbar">
 <button id="exportPngBtn">Export Chart PNG</button><button id="exportPdfBtn" class="primary">Download PDF</button><button id="exportAllSizesPdfBtn" title="Build a separate PDF for every blanket size">All Sizes PDFs</button><span class="sep"></span><button class="tool" data-tool="paint" title="Change one stitch at a time (P)">✏ Paint Stitch</button><button id="mirrorBtn">⇆ Mirror</button><button id="clearBtn">Clear</button>
 </nav>
@@ -592,7 +592,7 @@ body.standalone{background:var(--bg)}
 <div id="pdfNameModal" class="modal hidden"><div class="dialog"><h2 id="pdfNameTitle">Name this PDF</h2><p id="pdfNameHint" class="help">Enter a name for the download. The blanket type is added to the file name automatically.</p><div class="field"><label for="pdfNameInput">Blanket name</label><input id="pdfNameInput" type="text" autocomplete="off" placeholder="My blanket"></div><p id="pdfNamePreview" class="help">File name: <strong id="pdfNamePreviewValue">Untitled</strong>.pdf</p><div class="dialogActions"><button type="button" id="pdfNameCancel">Cancel</button><button type="button" id="pdfNameConfirm" class="primary">Continue</button></div></div></div>
 <div id="allSizesModal" class="modal hidden"><div class="dialog allSizesDialog"><h2>Choose sizes for PDF export</h2><p class="help">Select which blanket sizes to build. Larger sizes are selected by default.</p><div class="allSizesToolbar"><button type="button" id="allSizesSelectDefaults">Default larger sizes</button><button type="button" id="allSizesSelectAll">Select all</button><button type="button" id="allSizesClear">Clear</button></div><div id="allSizesList" class="allSizesList" role="group" aria-label="Blanket sizes"></div><p id="allSizesCount" class="help"></p><div class="dialogActions"><button type="button" id="allSizesCancel">Cancel</button><button type="button" id="allSizesConfirm" class="primary">Build selected PDFs</button></div></div></div>
 <div id="validationModal" class="modal hidden"><div class="dialog validationDialog"><div class="validationHeader"><div><h2>Design validation</h2><div id="validationModalSummary" class="help"></div></div><div class="spacer"></div><button id="closeValidation">✕</button></div><div id="validationBadges" class="summaryStrip"></div><div id="validationIssues" class="issueList"></div><div class="dialogActions"><button id="fixAllSafe">Apply all safe fixes</button><button id="closeValidationBottom" class="primary">Done</button></div></div></div>
-<div id="welcome" class="modal"><div class="dialog startDialog"><p class="welcomeBrand">Mosaic <span class="badge">v20.79</span></p><h2>Welcome to your craft studio</h2><p class="help welcomeLead">Choose a blanket size to begin. Bring a photo or SVG now, or start a blank chart and import later—whichever feels right.</p><div class="presetHero"><label for="blanketPreset">Blanket size</label><select id="blanketPreset" aria-label="Blanket size preset"><option value="custom">Custom dimensions</option><option value="lovey">Lovey — 12 × 12 in</option><option value="security">Security blanket — 14 × 17 in</option><option value="stroller">Stroller — 30 × 35 in</option><option value="receiving">Receiving blanket — 36 × 36 in</option><option value="crib">Crib — 36 × 50 in</option><option value="lapghan">Lapghan — 36 × 48 in</option><option value="throw">Throw — 50 × 60 in</option><option value="twin">Twin — 66 × 90 in</option><option value="full" selected>Full — 80 × 90 in</option><option value="queen">Queen — 90 × 100 in</option><option value="king">King — 108 × 100 in</option><option value="californiaKing">California King — 104 × 108 in</option></select><div class="rangeHint">Presets are common planning dimensions. Custom dimensions remain fully editable.</div></div><div class="section"><h3>Blanket orientation</h3><div class="orientationTabs"><button type="button" id="orientationLandscape" class="orientationTab" data-orientation="landscape"><span class="orientationPreview"></span>Landscape</button><button type="button" id="orientationPortrait" class="orientationTab active" data-orientation="portrait"><span class="orientationPreview"></span>Portrait</button></div><div class="rangeHint">Changing orientation swaps the long and short sides immediately.</div></div><div class="sizeTabs"><button type="button" id="sizeByGrid" class="sizeTab">Stitches and rows</button><button type="button" id="sizeByInches" class="sizeTab active">Finished size in inches</button></div><div class="startupGrid"><div id="gridSizeFields" class="hidden"><div class="field"><label>Stitches wide</label><input id="startGridW" type="number" min="1" max="2000" value="48"></div><div class="field"><label>Rows high</label><input id="startGridH" type="number" min="1" max="2000" value="60"></div></div><div id="inchSizeFields" class="hidden"><div class="field"><label>Width (inches)</label><input id="startInchesW" type="number" min="0.25" max="500" step="0.25" value="40"></div><div class="field"><label>Height (inches)</label><input id="startInchesH" type="number" min="0.25" max="500" step="0.25" value="50"></div></div><div><div class="field"><label>Yarn weight</label><select id="startYarnWeight"><option value="lace">0 — Lace</option><option value="superfine">1 — Super Fine</option><option value="fine">2 — Fine</option><option value="light">3 — Light</option><option value="medium" selected>4 — Medium</option><option value="bulky">5 — Bulky</option><option value="superbulky">6 — Super Bulky</option><option value="jumbo">7 — Jumbo</option></select></div><div class="field"><label>Stitches per inch</label><input id="startSpi" type="number" min="0.25" max="20" step="0.1" value="4.5"></div><div id="gaugeHint" class="rangeHint"></div></div><div id="startupSummary" class="startupSummary fullSpan"></div></div><div class="dialogActions"><button id="continueWelcome" class="hidden">Continue where you left off</button><button id="importLaterWelcome">Start a blank project</button><label id="closeWelcome" class="primary" for="welcomeImageFile">Start with a photo</label><input id="welcomeImageFile" class="srFile" type="file" accept="image/*,image/svg+xml,.svg"></div></div></div>
+<div id="welcome" class="modal"><div class="dialog startDialog"><p class="welcomeBrand">Mosaic <span class="badge">v20.80</span></p><h2>Welcome to your craft studio</h2><p class="help welcomeLead">Choose a blanket size to begin. Bring a photo or SVG now, or start a blank chart and import later—whichever feels right.</p><div class="presetHero"><label for="blanketPreset">Blanket size</label><select id="blanketPreset" aria-label="Blanket size preset"><option value="custom">Custom dimensions</option><option value="lovey">Lovey — 12 × 12 in</option><option value="security">Security blanket — 14 × 17 in</option><option value="stroller">Stroller — 30 × 35 in</option><option value="receiving">Receiving blanket — 36 × 36 in</option><option value="crib">Crib — 36 × 50 in</option><option value="lapghan">Lapghan — 36 × 48 in</option><option value="throw">Throw — 50 × 60 in</option><option value="twin">Twin — 66 × 90 in</option><option value="full" selected>Full — 80 × 90 in</option><option value="queen">Queen — 90 × 100 in</option><option value="king">King — 108 × 100 in</option><option value="californiaKing">California King — 104 × 108 in</option></select><div class="rangeHint">Presets are common planning dimensions. Custom dimensions remain fully editable.</div></div><div class="section"><h3>Blanket orientation</h3><div class="orientationTabs"><button type="button" id="orientationLandscape" class="orientationTab" data-orientation="landscape"><span class="orientationPreview"></span>Landscape</button><button type="button" id="orientationPortrait" class="orientationTab active" data-orientation="portrait"><span class="orientationPreview"></span>Portrait</button></div><div class="rangeHint">Changing orientation swaps the long and short sides immediately.</div></div><div class="sizeTabs"><button type="button" id="sizeByGrid" class="sizeTab">Stitches and rows</button><button type="button" id="sizeByInches" class="sizeTab active">Finished size in inches</button></div><div class="startupGrid"><div id="gridSizeFields" class="hidden"><div class="field"><label>Stitches wide</label><input id="startGridW" type="number" min="1" max="2000" value="48"></div><div class="field"><label>Rows high</label><input id="startGridH" type="number" min="1" max="2000" value="60"></div></div><div id="inchSizeFields" class="hidden"><div class="field"><label>Width (inches)</label><input id="startInchesW" type="number" min="0.25" max="500" step="0.25" value="40"></div><div class="field"><label>Height (inches)</label><input id="startInchesH" type="number" min="0.25" max="500" step="0.25" value="50"></div></div><div><div class="field"><label>Yarn weight</label><select id="startYarnWeight"><option value="lace">0 — Lace</option><option value="superfine">1 — Super Fine</option><option value="fine">2 — Fine</option><option value="light">3 — Light</option><option value="medium" selected>4 — Medium</option><option value="bulky">5 — Bulky</option><option value="superbulky">6 — Super Bulky</option><option value="jumbo">7 — Jumbo</option></select></div><div class="field"><label>Stitches per inch</label><input id="startSpi" type="number" min="0.25" max="20" step="0.1" value="4.5"></div><div id="gaugeHint" class="rangeHint"></div></div><div id="startupSummary" class="startupSummary fullSpan"></div></div><div class="dialogActions"><button id="continueWelcome" class="hidden">Continue where you left off</button><button id="importLaterWelcome">Start a blank project</button><label id="closeWelcome" class="primary" for="welcomeImageFile">Start with a photo</label><input id="welcomeImageFile" class="srFile" type="file" accept="image/*,image/svg+xml,.svg"></div></div></div>
 <script>
 (() => {
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
@@ -866,6 +866,7 @@ function modeDownsampleIndexes(indexes,srcW,srcH,destW,destH,paletteLen,palette)
    if(lum[i]<lum[darkIdx])darkIdx=i
   }
  }
+ const strongContrast=!!(lum&&paletteLen>=2&&lum[lightIdx]-lum[darkIdx]>=28);
  for(let y=0;y<destH;y++){
   const y0=Math.floor(y*srcH/destH),y1=Math.max(y0+1,Math.floor((y+1)*srcH/destH));
   for(let x=0;x<destW;x++){
@@ -880,39 +881,40 @@ function modeDownsampleIndexes(indexes,srcW,srcH,destW,destH,paletteLen,palette)
    let best=0,bv=-1,rawBest=0,rawBv=-1;
    for(let i=0;i<paletteLen;i++){
     if(votes[i]>rawBv){rawBv=votes[i];rawBest=i}
-    let score=votes[i];
-    // Mild luminance bias only — strong light preference was erasing facial details.
-    if(lum){const t=Math.max(0,Math.min(1,lum[i]/255));score*=1+.22*t}
-    if(score>bv){bv=score;best=i}
+    if(votes[i]>bv){bv=votes[i];best=i}
    }
-   if(lum&&paletteLen>=2){
+   // Symmetric fine-feature keep: whichever pole (light or dark) is the minority
+   // detail color gets preserved, so opposite uploads / inverted art still work.
+   if(strongContrast){
     const majShare=votes[rawBest]/total;
     const lightShare=votes[lightIdx]/total;
     const darkShare=votes[darkIdx]/total;
-    // Preserve thin LIGHT lines through dark areas (stripes/waves), but only on close races.
-    if(lightIdx!==rawBest&&lightShare>=.24&&majShare<.58&&lum[lightIdx]-lum[rawBest]>40)best=lightIdx;
-    // Preserve tiny DARK details on light faces (eyes/nose/mouth).
-    if(darkIdx!==best&&darkShare>=.14&&(rawBest===lightIdx||lum[rawBest]-lum[darkIdx]>40)&&(darkShare>=.2||majShare<.7))best=darkIdx
+    if(lightIdx!==rawBest&&lightShare>=.22&&majShare<.6&&lum[lightIdx]-lum[rawBest]>35)best=lightIdx;
+    if(darkIdx!==best&&darkShare>=.14&&(rawBest===lightIdx||lum[rawBest]-lum[darkIdx]>35)&&(darkShare>=.18||majShare<.72))best=darkIdx;
+    // If both poles claim the cell, prefer the stronger local minority share.
+    if(lightIdx!==darkIdx&&votes[lightIdx]>0&&votes[darkIdx]>0&&majShare<.55){
+     if(lightShare>=.22&&darkShare>=.14)best=lightShare>=darkShare?lightIdx:darkIdx
+    }
    }
    cells[y*destW+x]=best
   }
  }
  return cells
 }
-function reconnectLightLines(cells,w,h,palette){
+function reconnectContrastLines(cells,w,h,palette){
  if(!palette||palette.length<2||!cells?.length)return cells;
- let lightIdx=0,lightL=-1,darkL=Infinity;
+ let lightIdx=0,darkIdx=0,lightL=-1,darkL=Infinity;
  for(let i=0;i<palette.length;i++){
   const L=paletteLuminance(palette[i]);
   if(L>lightL){lightL=L;lightIdx=i}
-  if(L<darkL)darkL=L
+  if(L<darkL){darkL=L;darkIdx=i}
  }
- if(lightL-darkL<28)return cells;
+ if(lightL-darkL<28||lightIdx===darkIdx)return cells;
  const out=cells.slice();
- // Only bridge a light gap when it sits in a mostly-DARK neighborhood.
- // Bridging inside light regions would erase eyes and other facial dots.
- const darkAround=(i,skipA,skipB)=>{
-  let dark=0,seen=0;
+ // Bridge single-stitch gaps for either color when the gap sits in the opposite field.
+ // Works the same if the uploaded art has light/dark roles reversed.
+ const oppositeAround=(i,colorIdx,skipA,skipB)=>{
+  let opposite=0,seen=0;
   const x=i%w,y=(i-x)/w;
   for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
    if(!dx&&!dy)continue;
@@ -921,24 +923,28 @@ function reconnectLightLines(cells,w,h,palette){
    const ni=ny*w+nx;
    if(ni===skipA||ni===skipB)continue;
    seen++;
-   if(out[ni]!==lightIdx)dark++
+   if(out[ni]!==colorIdx)opposite++
   }
-  return seen>0&&dark>=Math.ceil(seen*.55)
+  return seen>0&&opposite>=Math.ceil(seen*.55)
  };
- for(let y=0;y<h;y++){
-  for(let x=1;x<w-1;x++){
-   const i=y*w+x;
-   if(out[i]===lightIdx)continue;
-   if(out[i-1]===lightIdx&&out[i+1]===lightIdx&&darkAround(i,i-1,i+1))out[i]=lightIdx
+ const bridge=(colorIdx)=>{
+  for(let y=0;y<h;y++){
+   for(let x=1;x<w-1;x++){
+    const i=y*w+x;
+    if(out[i]===colorIdx)continue;
+    if(out[i-1]===colorIdx&&out[i+1]===colorIdx&&oppositeAround(i,colorIdx,i-1,i+1))out[i]=colorIdx
+   }
   }
- }
- for(let x=0;x<w;x++){
-  for(let y=1;y<h-1;y++){
-   const i=y*w+x;
-   if(out[i]===lightIdx)continue;
-   if(out[i-w]===lightIdx&&out[i+w]===lightIdx&&darkAround(i,i-w,i+w))out[i]=lightIdx
+  for(let x=0;x<w;x++){
+   for(let y=1;y<h-1;y++){
+    const i=y*w+x;
+    if(out[i]===colorIdx)continue;
+    if(out[i-w]===colorIdx&&out[i+w]===colorIdx&&oppositeAround(i,colorIdx,i-w,i+w))out[i]=colorIdx
+   }
   }
- }
+ };
+ bridge(lightIdx);
+ bridge(darkIdx);
  return out
 }
 function mosaicConvertFromImage(img,destW,destH,opts={}){
@@ -997,7 +1003,7 @@ function mosaicConvertFromImage(img,destW,destH,opts={}){
  const freckling=opts.freckling!=null?opts.freckling:state.imageData?.vectorFreckling??100;
  const clusterSize=opts.clusterSize!=null?opts.clusterSize:state.imageData?.vectorClusterSize??4;
  if(simp!=='exact'&&simp!=='almostExact')outCells=removeSmallColorClusters(outCells,destW,destH,clusterSize,freckling);
- outCells=reconnectLightLines(outCells,destW,destH,q.palette);
+ outCells=reconnectContrastLines(outCells,destW,destH,q.palette);
  return {palette:q.palette.map(c=>c.map(v=>Math.round(v))),cells:outCells,workW,workH,mul}
 }
 function convertImage(img,opts={}){
@@ -1325,7 +1331,7 @@ window.addEventListener('pageshow',e=>{if(e.persisted)location.reload()});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persistProject()});
 $('#projectName').addEventListener('change',()=>{if(!isBlankProjectName($('#projectName').value))state.nameConfirmed=true;schedulePersist()});
 $('#projectName').addEventListener('blur',()=>{if(!isBlankProjectName($('#projectName').value))state.nameConfirmed=true;schedulePersist()});
-if('serviceWorker' in navigator){(async()=>{try{const EXPECT='mosaic-pwa-v79';const KEY='mosaic-sw-expect';const cached=localStorage.getItem(KEY);if(cached!==EXPECT){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));if('caches' in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)))}Object.keys(localStorage).filter(k=>k.startsWith('mosaic-sw-')).forEach(k=>localStorage.removeItem(k));localStorage.setItem(KEY,EXPECT);location.replace('/mosaic/?v=79&t='+Date.now());return}const reg=await navigator.serviceWorker.register('/mosaic/sw.js?v=79',{scope:'/mosaic/'});navigator.serviceWorker.addEventListener('controllerchange',()=>{if(sessionStorage.getItem('mosaic-sw-reloaded')===EXPECT)return;sessionStorage.setItem('mosaic-sw-reloaded',EXPECT);location.reload()});reg.update?.()}catch(err){console.warn('Service worker registration failed',err)}})()}
+if('serviceWorker' in navigator){(async()=>{try{const EXPECT='mosaic-pwa-v80';const KEY='mosaic-sw-expect';const cached=localStorage.getItem(KEY);if(cached!==EXPECT){const regs=await navigator.serviceWorker.getRegistrations();await Promise.all(regs.map(r=>r.unregister()));if('caches' in window){const keys=await caches.keys();await Promise.all(keys.map(k=>caches.delete(k)))}Object.keys(localStorage).filter(k=>k.startsWith('mosaic-sw-')).forEach(k=>localStorage.removeItem(k));localStorage.setItem(KEY,EXPECT);location.replace('/mosaic/?v=80&t='+Date.now());return}const reg=await navigator.serviceWorker.register('/mosaic/sw.js?v=80',{scope:'/mosaic/'});navigator.serviceWorker.addEventListener('controllerchange',()=>{if(sessionStorage.getItem('mosaic-sw-reloaded')===EXPECT)return;sessionStorage.setItem('mosaic-sw-reloaded',EXPECT);location.reload()});reg.update?.()}catch(err){console.warn('Service worker registration failed',err)}})()}
 })();
 </script>
 </body></html>
