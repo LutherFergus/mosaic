@@ -901,6 +901,7 @@ function modeDownsampleIndexes(indexes,srcW,srcH,destW,destH,paletteLen,palette)
  }
  return cells
 }
+/* auto-detect light/dark poles */
 function reconnectContrastLines(cells,w,h,palette){
  if(!palette||palette.length<2||!cells?.length)return cells;
  let lightIdx=0,darkIdx=0,lightL=-1,darkL=Infinity;
