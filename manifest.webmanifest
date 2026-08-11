@@ -2,7 +2,7 @@
   "name": "Mosaic Blanket Designer",
   "short_name": "Mosaic",
   "description": "Design mosaic crochet blanket charts, convert images, and export patterns.",
-  "start_url": "/mosaic/?v=79",
+  "start_url": "/mosaic/?v=80",
   "scope": "/mosaic/",
   "id": "/mosaic/",
   "display": "standalone",
